@@ -1,0 +1,300 @@
+﻿@model PoojaStores.Models.ModelClasses.ProductMasterModel
+@{ 
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-houzz"></i>
+        </div>
+        <div class="header-title">
+            <h1>Add Product</h1>
+            <small>Add Detail Product.</small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <div class="content">
+        <div class="row">
+            <!-- Form controls -->
+            <div class="col-sm-12">
+                <div class="card all_btn_card" id="lobicard-custom-control1" data-sortable="true">
+                    <div class="card-header all_card_btn">
+                        <div class="row">
+                            <div class="card-title custom_title col-md-6">
+                                <h5>Add Product</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="btn-group float-right" role="group">
+                                    <div class="buttonexport" id="buttonlist">
+                                        <a class="btn btn-add" href="~/Product/ProductList">
+                                            <i class="fa fa-reply mr-2"></i>Back
+                                        </a>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="~/Product/ProductData" method="post" enctype="multipart/form-data">
+                            @Html.HiddenFor(m=>m.ProductId)
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Select Category</label>
+                                    @Html.DropDownListFor(a => Model.CategoryId, new SelectList(Model.categoryDrops, "CategoryId", "CategoryName", Model.CategoryId) ,"---Select Category----", new { @id = "catId", @class = "form-control", @onChange = "GetSubcats()" })
+                                    @Html.ValidationMessageFor(m => m.CategoryName, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Select SubCategory</label>
+                                    @Html.DropDownListFor(a => Model.SubcategoryId, new SelectList(Model.subCategoryDrops, "SubCategoryId", "SubCategoryName", Model.SubcategoryId), new { @id = "subcatId", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.SubCategoryName, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Pooja Item</label>
+                                        @Html.DropDownListFor(m => Model.PoojaItemMasterId, new SelectList(Model.pojaItemDrops, "PrId", "ItemName", Model.PoojaItemMasterId),"---Select PoojaItem----", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.PoojaItemName, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Pooja Service</label>
+                                        @Html.DropDownListFor(m => Model.PoojaServiceMasterId, new SelectList(Model.pojaServiceDrops, "PrId", "ServiceName", Model.PoojaServiceMasterId),"---Select PoojaService----", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.PoojaServiceName, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Product Title (For Sales Model only) </label>
+                                        <textarea class="form-control" rows="3" name="ProductTitle">@Model.ProductTitle</textarea>
+                                        @Html.ValidationMessageFor(m => m.ProductTitle, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Product Description </label>
+                                        <textarea class="form-control" rows="3" name="ProductDescription">@Model.ProductDescription</textarea>
+                                        @Html.ValidationMessageFor(m => m.ProductDescription, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Actual Price </label>
+                                        <input type="text" class="form-control" placeholder="Enter Actual Price" name="ActualPrice" value="@Model.ActualPrice">
+                                        @Html.ValidationMessageFor(m => m.ActualPrice, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Selling Price </label>
+                                        <input type="text" class="form-control" placeholder="Enter Selling Price" name="SellingPrice" value="@Model.SellingPrice">
+                                        @Html.ValidationMessageFor(m => m.SellingPrice, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Product Code </label>
+                                        <input type="text" class="form-control" placeholder="Enter Product Code" name="ProductCode" value="@Model.ProductCode">
+                                        @Html.ValidationMessageFor(m => m.ProductCode, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>SQUID  </label>
+                                        <input type="text" class="form-control" placeholder="Enter SQUID" name="SQUID" value="@Model.SQUID">
+                                        @Html.ValidationMessageFor(m => m.SQUID, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Brand Name  </label>
+                                        <input type="text" class="form-control" placeholder="Enter Brand Name" name="BrandName" value="@Model.BrandName">
+                                        @Html.ValidationMessageFor(m => m.BrandName, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Measurement Type</label>
+                                        @Html.DropDownListFor(m => Model.MeasurementMasterId, new SelectList(Model.measurementDrops, "MeasurementId", "MeasurementName", Model.MeasurementMasterId),"---Select Measurement----", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.MeasurementName, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Speciality</label>
+                                        @Html.DropDownListFor(m => Model.SpecialMasterId, new SelectList(Model.specialityDrops, "PrId", "SpecialityName", Model.SpecialMasterId), new { @class = "form-control" })
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Delivery Type </label>
+                                        @Html.DropDownListFor(m => Model.DeliveryMasterId, new SelectList(Model.deliveryDrops, "DeliveryId", "DeliveryType", Model.DeliveryMasterId), new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Discount </label>
+                                        @Html.DropDownListFor(m => Model.DiscountMasterId, new SelectList(Model.discountDrops, "DiscountId", "DiscountName", Model.DiscountMasterId), new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>GST </label>
+                                        @Html.DropDownListFor(m => Model.GSTMasterId, new SelectList(Model.gstDrop, "MasterId", "GSTName", Model.GSTMasterId), new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Minimum Order Qty </label>
+                                        <input type="text" class="form-control" placeholder="Enter Minimum Order Qty" name="MinimumOrderQty" value="@Model.MinimumOrderQty">
+                                        @Html.ValidationMessageFor(m => m.MinimumOrderQty, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Qty Available </label>
+                                        <input type="text" class="form-control" placeholder="Enter Qty Available" name="QtyAvailable" value="@Model.QtyAvailable">
+                                        @Html.ValidationMessageFor(m => m.QtyAvailable, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Package Length  </label>
+                                        <input type="text" class="form-control" placeholder="Enter Package Length" value="@Model.PackLength" name="PackLength">
+                                        @Html.ValidationMessageFor(m => m.PackLength, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Package Height</label>
+                                        <input type="text" class="form-control" placeholder="Enter Package Height" value="@Model.PackHeight" name="PackHeight">
+                                        @Html.ValidationMessageFor(m => m.PackHeight, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Package Width </label>
+                                        <input type="text" class="form-control" placeholder="Enter Package Width" value="@Model.PackWidth" name="PackWidth">
+                                        @Html.ValidationMessageFor(m => m.PackWidth, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Actual Weight </label>
+                                        <input type="text" class="form-control" placeholder="Enter Actual Weight" value="@Model.ActualWeight" name="ActualWeight">
+                                        @Html.ValidationMessageFor(m => m.ActualWeight, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Volumetric Weight </label>
+                                        <input type="text" class="form-control" placeholder="Enter Volumetric Weight" value="@Model.VolumetricWeight" name="VolumetricWeight">
+                                        @Html.ValidationMessageFor(m => m.VolumetricWeight, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Product Color </label>
+                                        <input type="text" class="form-control" placeholder="Enter Product Color" value="@Model.ProductColor" name="ProductColor">
+                                        @Html.ValidationMessageFor(m => m.ProductColor, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Is Featured </label>
+                                        <select class="form-control" name="IsFeatured">
+                                            @if (Model.IsFeatured == false)
+                                             {
+                                                <option value="False" selected>No</option>
+                                                <option value="True">Yes</option>
+                                             }
+                                            else
+                                            {
+                                                <option value="False" >No</option>
+                                                <option value="True" selected>Yes</option>
+
+                                            }
+
+                                        </select>
+                                         </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Primary Image1 upload</label>
+                                        <input type="file" name="ProductMainImageUploaded" accept="image/*" />
+                                        @Html.ValidationMessageFor(m => m.ProductMainImageUploaded, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Primary Image2 upload</label>
+                                        <input type="file" name="ProductMainImage2Uploaded" accept="image/*"/>
+                                        @Html.ValidationMessageFor(m => m.ProductMainImage2Uploaded, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Other Images  upload</label>
+                                        <input type="file" name="ProductOtherImgsUploaded" class="form-control" multiple accept="image/*"/>
+                                        <input type="hidden" name="old_picture">
+                                        @Html.ValidationMessageFor(m => m.OtherImages, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="reset-button">
+                               
+                                <button type="submit" class="btn btn-success"> Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        
+    });
+    function GetSubcats() {
+        var catid = $('#catId option:selected').val();
+        $.ajax({
+            url: GlobalUrl + "Common/GetAllSubCats?catId=" + catid,
+            type: 'post',
+            data: '{}',
+            success: function (res) {
+                var r = res.result.length;
+                var row = '';
+                var selectedSubcat = $('#selectedSubCat').val();
+
+                if (r > 0) {
+
+                    for (var i = 0; i < r; i++) {
+                        if (res.result[i].subCategoryId == selectedSubcat) {
+                            row = row + '<option value="' + res.result[i].subCategoryId + '" selected>' + res.result[i].subCategoryName + '</option>';
+                        }
+                        else {
+                            row = row + '<option value="' + res.result[i].subCategoryId + '">' + res.result[i].subCategoryName + '</option>';
+                        }
+
+                        //$('#SubCategoryId').append('<option value="' + res.result[i].subCategryId + '">' + res.result[i].subCategoryName + '</option>');
+                    }
+                }
+                $('#subcatId').html('');
+                $('#subcatId').html(row);
+            }
+        });
+    }
+</script>
+   

@@ -1,0 +1,511 @@
+﻿@model IEnumerable< PoojaStores.Models.ModelClasses.ProductHomeDisplayModel>
+
+@{     
+    System.Globalization.CultureInfo Indian = new System.Globalization.CultureInfo("hi-IN");
+    int curentPage = ViewBag.pn;
+    var totalPages = ViewBag.totalPages;
+    int pageSize = ViewBag.ps;
+}
+<main class="main">
+    <!--<div class="category-banner-container bg-gray">
+        <div class="category-banner categoryBannerBg banner text-uppercase">
+            <div class="container position-relative">
+                <div class="row">
+                    <div class="pl-lg-8 pb-5 pb-md-0 col-md-8 col-xl-4 col-lg-4 offset-1">
+                        <h3>Pooja Kalas</h3>-->
+                        @*<a href="~/Home/ProductsList?catId=4" class="btn btn-dark">Get Yours!</a>*@
+                    <!--</div>
+                    <div class="pl-lg-3 col-md-4 offset-md-0 offset-1 pt-3">-->
+                        @*<div class="coupon-sale-content">
+                            <h4 class="m-b-1 coupon-sale-text bg-white text-transform-none">
+                                Exclusive COUPON
+                            </h4>
+                            <h5 class="mb-2 coupon-sale-text d-block ls-10 p-0"><i class="ls-0">UP TO</i><b class="text-dark">₹100</b> OFF</h5>
+                        </div>*@
+                    <!--</div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <div class="container">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home/Index"><i class="icon-home"></i></a></li>
+                @*<li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>*@
+                <li class="breadcrumb-item"><a href="~/Home/ProductsList?catId=@ViewBag.catId">@ViewBag.catsName</a></li>
+                @if (ViewBag.subCatName != null)
+                {
+                <li class="breadcrumb-item active" aria-current="page">@ViewBag.subCatName</li>
+                }
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-lg-9 main-content">
+                <nav class="toolbox sticky-header" data-sticky-options="{'mobile': true}">
+                    <div class="toolbox-left">
+                        <a href="#" class="sidebar-toggle">
+                            <svg data-name="Layer 3" id="Layer_3"
+                                 viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="15" x2="26" y1="9" y2="9" class="cls-1"></line>
+                                <line x1="6" x2="9" y1="9" y2="9" class="cls-1"></line>
+                                <line x1="23" x2="26" y1="16" y2="16" class="cls-1"></line>
+                                <line x1="6" x2="17" y1="16" y2="16" class="cls-1"></line>
+                                <line x1="17" x2="26" y1="23" y2="23" class="cls-1"></line>
+                                <line x1="6" x2="11" y1="23" y2="23" class="cls-1"></line>
+                                <path d="M14.5,8.92A2.6,2.6,0,0,1,12,11.5,2.6,2.6,0,0,1,9.5,8.92a2.5,2.5,0,0,1,5,0Z"
+                                      class="cls-2"></path>
+                                <path d="M22.5,15.92a2.5,2.5,0,1,1-5,0,2.5,2.5,0,0,1,5,0Z" class="cls-2"></path>
+                                <path d="M21,16a1,1,0,1,1-2,0,1,1,0,0,1,2,0Z" class="cls-3"></path>
+                                <path d="M16.5,22.92A2.6,2.6,0,0,1,14,25.5a2.6,2.6,0,0,1-2.5-2.58,2.5,2.5,0,0,1,5,0Z"
+                                      class="cls-2"></path>
+                            </svg>
+                            <span>Filter</span>
+                        </a>
+
+                        <div class="toolbox-item toolbox-sort">
+                            <label>Sort By:</label>
+
+                            <div class="select-custom">
+                                <select name="orderby" class="form-control" onchange="Sort()" id="sorting">
+                                    @if (ViewBag.odr == "Default")
+                                    {
+                                        <option value="default" selected> Default sorting</option>
+                                        @*<option value="popularity">Sort by popularity</option>
+            <option value="rating">Sort by average rating</option>
+            <option value="date">Sort by newness</option>*@
+                                        <option value="LTH">Sort by price: low to high</option>
+                                        <option value="HTL">Sort by price: high to low</option>
+                                    }
+                                    else if (ViewBag.odr == "LTH")
+                                    {
+                                        <option value="default"> Default sorting</option>
+                                        @*<option value="popularity">Sort by popularity</option>
+            <option value="rating">Sort by average rating</option>
+            <option value="date">Sort by newness</option>*@
+                                        <option value="LTH" selected>Sort by price: low to high</option>
+                                        <option value="HTL">Sort by price: high to low</option>
+                                    }
+                                    else if (ViewBag.odr == "HTL")
+                                    {
+                                        <option value="default"> Default sorting</option>
+                                        @*<option value="popularity">Sort by popularity</option>
+            <option value="rating">Sort by average rating</option>
+            <option value="date">Sort by newness</option>*@
+                                        <option value="LTH">Sort by price: low to high</option>
+                                        <option value="HTL" selected>Sort by price: high to low</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="default" selected> Default sorting</option>
+                                        @*<option value="popularity">Sort by popularity</option>
+            <option value="rating">Sort by average rating</option>
+            <option value="date">Sort by newness</option>*@
+                                        <option value="LTH">Sort by price: low to high</option>
+                                        <option value="HTL">Sort by price: high to low</option>
+                                    }
+                                </select>
+                            </div>
+                            <!-- End .select-custom -->
+                        </div>
+                        <!-- End .toolbox-item -->
+                    </div>
+                    <!-- End .toolbox-left -->
+
+                    <div class="toolbox-right">
+                        <div class="toolbox-item toolbox-show">
+                            <label>Show:</label>
+
+                            <div class="select-custom">
+                                <select name="count" class="form-control" onchange="SizeOfPage()" id="sz">
+                                    @if (ViewBag.ps == 12)
+                                    {
+                                        <option value="12" selected>12</option>
+                                        <option value="24">24</option>
+                                        <option value="36">36</option>
+                                    }
+                                    else if (ViewBag.ps == 24)
+                                    {
+                                        <option value="12">12</option>
+                                        <option value="24" selected>24</option>
+                                        <option value="36">36</option>
+                                    }
+                                    else if (ViewBag.ps == 36)
+                                    {
+                                        <option value="12">12</option>
+                                        <option value="24">24</option>
+                                        <option value="36" selected>36</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="12" selected>12</option>
+                                        <option value="24">24</option>
+                                        <option value="36">36</option>
+                                    }
+                                </select>
+                            </div>
+                            <!-- End .select-custom -->
+                        </div>
+                        <!-- End .toolbox-item -->
+
+                        @*<div class="toolbox-item layout-modes">
+                            <a href="category.html" class="layout-btn btn-grid active" title="Grid">
+                                <i class="icon-mode-grid"></i>
+                            </a>
+                            <a href="category-list.html" class="layout-btn btn-list" title="List">
+                                <i class="icon-mode-list"></i>
+                            </a>
+                        </div>*@
+                        <!-- End .layout-modes -->
+                    </div>
+                    <!-- End .toolbox-right -->
+                </nav>
+
+                <div class="row">
+                    @foreach (var p in Model)
+                    {
+                        <div class="col-6 col-sm-4 col-md-3">
+
+                            <div class="product-default">
+                                <figure>
+                                    <a href="~/Home/ProductDetails?id=@p.ProductId">
+                                        <img src="~/ProductImages/@p.Image1" width="280" height="280" alt="product" />
+                                        @if (p.Image2 != null)
+                                        {
+                                            <img src="~/ProductImages/@p.Image2" width="280" height="280" alt="product" />
+                                        }
+                                    </a>
+
+                                    <div class="label-group">
+                                        @*<div class="product-label label-hot">HOT</div>*@
+                                        @if (p.Discount > 0)
+                                        {
+                                        <div class="product-label label-sale">-@p.Discount%</div>
+                                        }
+                                    </div>
+                                </figure>
+
+                                <div class="product-details">
+                                    <div class="category-wrap">
+                                        <div class="category-list">
+                                            <a href="#" class="product-category">@p.CategoryName</a>
+                                        </div>
+                                    </div>
+
+                                    <h3 class="product-title"> <a href="~/Home/ProductDetails?id=@p.ProductId">@p.Title</a> </h3>
+
+                                    <!--<div class="ratings-container">
+                                        <div class="product-ratings">
+                                            <span class="ratings" style="width:100%"></span>-->
+                                            <!-- End .ratings -->
+                                            <!--<span class="tooltiptext tooltip-top"></span>
+                                        </div>-->
+                                        <!-- End .product-ratings -->
+                                    <!--</div>-->
+                                    <!-- End .product-container -->
+
+                                    <div class="price-box">
+                                        @if (p.Discount > 0)
+                                        {
+                                            <span class="old-price"> @(String.Format(Indian,"{0:N}",p.SellingPrice))</span>
+                                            <span class="product-price">₹ @(String.Format(Indian,"{0:N}",p.DiscountedPrice))</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="product-price">₹ @(String.Format(Indian,"{0:N}",p.SellingPrice))</span>
+                                        }
+
+
+                                    </div>
+                                    <!-- End .price-box -->
+
+                                    <div class="product-action">
+
+                                        @if (p.IsWishlist == false)
+                                        {
+                                            <a href="#" class="" title="Add to Wishlist" onclick="WishList(@p.ProductId)">
+                                                <i class="icon-wishlist-2"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" class="" title="wishlist">
+                                                <i class="fa fa-heart" aria-hidden="true"> </i>
+                                            </a>
+
+                                        }
+
+                                        <a href="~/Home/ProductDetails?id=@p.ProductId" class="btn-icon btn-add-cart">
+                                            <i class="fa fa-arrow-right"></i><span>
+                                               VIEW PRODUCT
+                                            </span>
+                                        </a>
+                                        @if (p.IsCart == false)
+                                        {
+                                            <a href="#" class="btn-icon" title="Add to cart"><i class="fas fa-shopping-cart" aria-hidden="false" onclick="GoCart(@p.ProductId)"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" class="btn-icon" title="Add to cart"><i class="fas fa-check-circle"></i></a>
+
+                                        }
+                                    </div>
+                                </div>
+                                <!-- End .product-details -->
+                            </div>
+                        </div>
+                    }
+                        <!-- End .col-sm-4 -->
+                    </div>
+                <!-- End .row -->
+
+                <nav class="toolbox toolbox-pagination">                    
+                    <form>
+                        <h4><span>Total @ViewBag.TotalRecords records</span></h4>
+                        <ul class="pagination toolbox-item">
+                            @{
+                                int pre = curentPage - 1;
+                                int next = curentPage + 1;
+                            }
+                            @if (curentPage == 1)
+                            {
+                                <li class="page-item disabled">
+                                    <a class="page-link page-link-btn" href="#"><i class="icon-angle-left"></i></a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link page-link-btn" href="~/Home/ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.search&pageNumber=@pre&pageSize=@ViewBag.ps&ord=@ViewBag.odr"><i class="icon-angle-left"></i></a>
+                                </li>
+                                @*<li class="page-item"><span class="page-link">...</span></li>*@
+                            }
+                            @if (totalPages <= 3)
+                            {
+                                @for (int cnt = 1; cnt <= totalPages; cnt++)
+                                {
+                                    if (cnt == curentPage)
+                                    {
+                                        <li class="page-item active">
+                                            <a class="page-link" href="#">@cnt <span class="sr-only">(current)</span></a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="~/Home/ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.search&pageNumber=@cnt&pageSize=@ViewBag.ps&ord=@ViewBag.odr">@cnt</a></li>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                @if (curentPage == 1)
+                                {
+                                    @for (int cnt = 1; cnt <= 3; cnt++)
+                                    {
+                                        if (cnt == curentPage)
+                                        {
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">@cnt <span class="sr-only">(current)</span></a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link" href="~/Home/ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.search&pageNumber=@cnt&pageSize=@ViewBag.ps&ord=@ViewBag.odr">@cnt</a></li>
+
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <li class="page-item"><a class="page-link" href="~/Home/ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.search&pageNumber=@pre&pageSize=@ViewBag.ps&ord=@ViewBag.odr">@pre</a></li>
+
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">@curentPage <span class="sr-only">(current)</span></a>
+                                    </li>
+
+                                    <li class="page-item"><a class="page-link" href="~/Home/ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.search&pageNumber=@next&pageSize=@ViewBag.ps&ord=@ViewBag.odr">@next</a></li>
+
+                                }
+                            }
+
+                            @if (curentPage != totalPages)
+                            {
+                                @*<li class="page-item"><span class="page-link">...</span></li>*@
+                                <li class="page-item">
+                                    <a class="page-link page-link-btn" href="~/Home/ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.search&pageNumber=@next&pageSize=@ViewBag.ps&ord=@ViewBag.odr"><i class="icon-angle-right"></i></a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled">
+                                    <a class="page-link page-link-btn" href="#"><i class="icon-angle-right"></i></a>
+                                </li>
+                            }
+
+                        </ul>
+                    </form>
+                </nav>
+            </div>
+            <!-- End .col-lg-9 -->
+
+            <div class="sidebar-overlay"></div>
+            <aside class="sidebar-shop col-lg-3 order-lg-first mobile-sidebar">
+                <div class="sidebar-wrapper">
+                    <div class="widget">
+                        <h3 class="widget-title">
+                            <a data-toggle="collapse" href="#widget-body-2" role="button" aria-expanded="true" aria-controls="widget-body-2">Categories</a>
+                        </h3>
+                       
+                            <div class="collapse show" id="widget-body-2">
+                                <div class="widget-body">
+                                    <ul class="cat-list">
+                                       @foreach (var c in ViewBag.HeadCats)
+                                        {
+                                            <li>
+                                                <a href="#widget-category-@c.CategoryId" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="widget-category-@c.CategoryId">
+                                                    @c.CategoryName<span class="products-count">(@c.ProductsCount)</span>
+                                                    <span class="toggle"></span>
+                                                </a>
+                                               @if (c.SubCats != null)
+                                                {
+                                                    <div class="collapse" id="widget-category-@c.CategoryId" >
+                                                        <ul class="cat-sublist">
+                                                           @foreach (var s in c.SubCats)
+                                                            {
+                                                                <li><a href="~/Home/ProductsList?catDetail=@c.CategoryId,@s.SubCategoryId">@s.SubCategoryName<span class="products-count">(@s.ProductCount)</span></a></li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                }
+                                            </li>
+                                        }
+                                     </ul>
+                                </div>
+                                <!-- End .widget-body -->
+                            </div>
+                            <!-- End .collapse -->
+                        </div>
+                    <!-- End .widget -->                    
+
+                    <div class="widget widget-featured">
+                        <h3 class="widget-title">Featured</h3>
+
+                        <div class="widget-body">
+                            <div class="owl-carousel widget-featured-products">
+                                @foreach (var f in ViewBag.fproducts)
+                                {
+                                <div class="featured-col">
+                                    @foreach (var a in f.fpros)
+                                    {
+                                    <div class="product-default left-details product-widget">
+                                        <figure>
+                                            <a href="~/Home/ProductDetails?id=@a.ProductId">
+                                                <img src="~/ProductImages/@a.ProductMainImage1" width="75" height="75" alt="product" />
+                                                <img src="~/ProductImages/@a.ProductMainImage2" width="75" height="75" alt="product" />
+                                            </a>
+                                        </figure>
+                                        <div class="product-details">
+                                            <h3 class="product-title">
+                                                <a href="~/Home/ProductDetails?id=@a.ProductId">
+                                                    @a.ProductTitle
+                                                </a>
+                                            </h3>
+                                            <!--<div class="ratings-container">
+                                                <div class="product-ratings">
+                                                    <span class="ratings" style="width:100%"></span>-->
+                                                    <!-- End .ratings -->
+                                                    <!--<span class="tooltiptext tooltip-top"></span>
+                                                </div>-->
+                                                <!-- End .product-ratings -->
+                                            <!--</div>-->
+                                            <!-- End .product-container -->
+                                            <div class="price-box">
+                                                <span class="product-price">₹@(String.Format(Indian,"{0:N}",a.DiscountedCost))</span>
+                                            </div>
+                                            <!-- End .price-box -->
+                                        </div>
+                                        <!-- End .product-details -->
+                                    </div>
+                                    }                                    
+                                </div>
+                                }
+                                <!-- End .featured-col -->                               
+                            </div>
+                            <!-- End .widget-featured-slider -->
+                        </div>
+                        <!-- End .widget-body -->
+                    </div>
+                    <!-- End .widget -->
+                </div>
+                <!-- End .sidebar-wrapper -->
+            </aside>
+            <!-- End .col-lg-3 -->
+        </div>
+        <!-- End .row -->
+    </div>
+    <!-- End .container -->
+
+    <div class="mb-4"></div>
+    <!-- margin -->
+</main>
+
+<script>
+    function WishList(id) {
+        var sel = $("#sorting option:selected").val();
+        var wishl =@ViewBag.iswish
+             
+        $.ajax ({
+
+            url: GlobalUrl + 'Sales/SaveWishList?id=' + id,
+            type: 'post',
+            data: '{}',
+            success: function (result) {
+                if (result.result.statusCode == 1) {
+                    toastr["success"]("Suucessfully Added!");
+
+                    window.location= "ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.ser&pageNumber=@ViewBag.pn&pageSize=@ViewBag.ps&ord=" + sel;
+                }
+                else if (result.result.statusCode == 5) {
+                    window.location = "GoToLogin";
+                    toastr["error"]("Added cancelled!")
+                }
+                else {
+                    toastr['error'](result.result.statusMessage);
+                }
+            }
+        })
+    }
+    function GoCart(id) {
+        var sel = $("#sorting option:selected").val();
+        $.ajax({
+            url: GlobalUrl + "Sales/SaveCart?id=" + id,
+            type: 'post',
+            data: '{}',
+            success: function (result) {
+
+                if (result.result.statusCode == 1) {
+                    toastr["success"]("Successfully Added!");
+                    window.location = "ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.ser&pageNumber=@ViewBag.pn&pageSize=@ViewBag.ps&ord=" + sel;
+                }
+                else if (result.result.statusCode == 5) {
+                    window.location = "GoToLogin";
+                    toastr['error']("Added Cancelled!");
+                } else {
+                    toastr['error'](result.result.statusMessage);
+                }
+
+            }
+        })
+    }
+
+    function Sort() {
+        var sel = $("#sorting option:selected").val();
+        window.location = "ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.ser&pageNumber=@ViewBag.pn&pageSize=@ViewBag.ps&ord=" + sel;
+    }
+    function SizeOfPage() {
+        var sel = $("#sz option:selected").val();
+        window.location = "ProductsList?catDetail=@ViewBag.cid,@ViewBag.sCid&type=@ViewBag.ser&pageNumber=@ViewBag.pn&pageSize=" + sel + "&ord=@ViewBag.odr"
+
+    }
+</script>

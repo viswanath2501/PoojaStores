@@ -1,0 +1,154 @@
+﻿@model PoojaStores.Models.Repositories.Entity.Users
+@{ 
+
+   
+}
+
+<main class="main">
+    <div class="page-header">
+        <div class="container d-flex flex-column align-items-center">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+                       
+                        <li class="breadcrumb-item active" aria-current="page">
+                            My Account
+                        </li>
+                    </ol>
+                </div>
+            </nav>
+
+            <h1>REGISTER</h1>
+        </div>
+    </div>
+
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="~/ProductImages/signup-img.jpg" width="100%" alt="login-logo">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="heading mb-1">
+                            <h2 class="title">@*Register*@</h2>
+                        </div>
+
+                        <form action="~/Authenticate/Register" method="post">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="first-name">
+                                        First Name
+                                        <span class="required">*</span>
+                                    </label>
+                                    
+                                    @Html.TextBoxFor(m=>m.Firstname,null,new { @placeholder = "Enter First Name", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Firstname, null, new {@class="text-danger"})
+                                    <p id="First" class="text-danger"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="last-name">
+                                        Last Name
+                                        <span class="required">*</span>
+                                    </label>
+                                    @Html.TextBoxFor(m => m.LastName, null, new { @placeholder = "Enter Last Name", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.LastName, null, new { @class = "text-danger" })
+                                    <p id="Last" class="text-danger"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="register-email">
+                                        Phone Number
+                                        <span class="required">*</span>
+                                    </label>
+                                    @*@Html.TextBoxFor(m => m.MobileNumber, null, new { @placeholder = "Enter Mobile Number", @class = "form-control" })*@
+                                    <input type="tel" placeholder = "Enter Mobile Number" class = "form-control" name="MobileNumber" @*pattern="[0-9]{2}-[0-9]{4}-[0-9]{4}"*@ />
+                                    @Html.ValidationMessageFor(m => m.MobileNumber, null, new { @class = "text-danger" })
+                                    <p id="Phone" class="text-danger"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="register-email">
+                                        Email
+                                        <span class="required">*</span>
+                                    </label>
+                                    <input type="email" name="EmailId" value="@Model.EmailId" placeholder = "Enter Email Id" class = "form-control" id="eml" />
+                                    @*@Html.TextBoxFor(m => m.EmailId, null, new { @placeholder = "Enter Email Id", @class = "form-control", @id="eml" })*@
+                                    @Html.ValidationMessageFor(m => m.EmailId, null, new { @class = "text-danger" })
+                                </div>
+                                @*<div class="col-md-12">
+                                    <label for="user-name">
+                                        User Name
+                                        <span class="required">*</span>
+                                    </label>
+                                    @Html.TextBoxFor(m => m.UserName, null, new { @placeholder = "Enter User Name", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.UserName, null, new { @class = "text-danger" })
+                                </div>*@
+                            <div class="col-md-6">
+                                <label for="register-password">
+                                    Password
+                                    <span class="required">*</span>
+                                </label>
+                                @Html.TextBoxFor(m => m.PWord, null, new { @placeholder = "Enter Password", @class = "form-control", @type = "password" , @id="FirstPwd" })
+                                @Html.ValidationMessageFor(m => m.PWord, null, new { @class = "text-danger" })
+                                <p id="pwd" class="text-danger"></p>
+                            </div>
+                                <div class="col-md-6">
+                                    <label for="register-password">
+                                        Confirm Password
+                                        <span class="required">*</span>
+                                    </label>
+                                    @Html.TextBox("CnPwsd",null,new {@placeholder = "Confirm Password", @class = "form-control", @type = "password",@onChange="Compare()", @id="CnfPwd"})
+                                    @*@Html.ValidationMessageFor(m => m.PWord, null, new { @class = "text-danger" })*@
+                                    <p id="cpwd" class="text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="checkbox d-flex">
+                                @Html.CheckBox("Condition",false,new{@id="chkcondition"})<a href="#">Terms and conditions</a>
+                            </div>
+
+                            <div>
+
+                                <p id="Message" class="text-danger"></p>
+                            </div>
+                            <div class="form-footer mb-2">
+                                <button type="submit" class="btn btn-dark btn-md w-100 mr-0" onclick="javascript:return AcceptTermAndcondition()">
+                                    Create Account
+                                </button>
+                            </div>
+                            <div class="already">
+                                <h5>Already have an account? <span><a href="~/Authenticate/Login">Log in</a></span></h5>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script language="javascript" src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $('#eml').val();
+    })
+        function AcceptTermAndcondition() {
+            var pwd = $('#FirstPwd').val();
+            var cpwd = $('#CnfPwd').val();
+            if ($("#chkcondition").is(':checked')) {
+                return true;
+            } else if (pwd != cpwd) {
+                $('#pwd').text("password and confirm password mismatch");
+            }
+            else {
+                $("#Message").text("Please Accept Terms And Conditions");
+                return false;
+            }
+    }
+    function Compare() {
+        var pwd = $('#FirstPwd').val();
+        var cpwd = $('#CnfPwd').val();
+        if (pwd != cpwd) {
+            $('#pwd').text("password and confirm password mismatch")
+        }
+    }
+</script>

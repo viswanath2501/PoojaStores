@@ -1,0 +1,120 @@
+﻿@model IEnumerable<PoojaStores.Models.Repositories.Entity.DiscountMaster>
+
+@{
+    int rCnt = 1;
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-book"></i>
+        </div>
+        <div class="header-title">
+            <h1>All Discounts</h1>
+            <small>Master Data Management.</small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card" data-sortable="true">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="card-title custom_title">
+                                    <div class="row">
+                                        <h4 class="col-md-8">Discount List</h4>
+                                     
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="btn-group float-right" role="group">
+                                    <div class="buttonexport" id="buttonlist">
+                                        <a class="btn btn-add" href="~/Master/DiscountData">
+                                            <i class="fa fa-plus"></i> Add New
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="no-more-tables">
+                            <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                                <thead class="cf">
+                                    <tr>
+                                        <th>S.no</th>
+                                        <th>Discount Name</th>
+                                        <th>Discount Percentage</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var u in Model)
+                                    {
+                                    <tr>
+                                        <td data-title="S.no">@(rCnt++)</td>
+                                        <td data-title="Item Name">@u.DiscountName</td>
+                                        <td data-title="Item Name">@u.DiscountPercentage</td>
+
+                                        <td data-title="Edit"><a href="~/Master/DiscountData?id=@u.DiscountId" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a></td>
+                                        <td data-title="Edit">
+                                            <a href="javascript:void(0)" onclick="ShowDelete(@u.DiscountId)">
+                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
+
+<script>
+    function ShowDelete(id) {
+        swal("Are you sure?", {
+            buttons: {
+                yes: {
+                    text: "Yes",
+                    value: "yes"
+                },
+                no: {
+                    text: "No",
+                    value: "no"
+                }
+            }
+        }).then((value) => {
+            if (value === "yes") {
+                $.ajax({
+                    url: GlobalUrl + "Master/DeleteDiscounts?id=" + id,
+                    type: 'post',
+                    data: '{}',
+                    success: function (result) {
+                        toastr["success"]("Successuflly deleted!");
+                        window.location.href = window.location.href;
+                    }
+                });
+            }
+            else {
+                toastr["error"]("Delete cancelled!")
+            }
+            return false;
+        });
+
+
+    }
+</script>

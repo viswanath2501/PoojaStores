@@ -1,0 +1,738 @@
+﻿@{
+    System.Globalization.CultureInfo Indian = new System.Globalization.CultureInfo("hi-IN");
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Divine Precincts</title>
+    <meta name="keywords" content="HTML5 Template" />
+    <meta name="description" content="Porto - Bootstrap eCommerce Template">
+    <meta name="author" content="SW-THEMES">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/assets/images/favicon.png">
+    <script>
+        WebFontConfig = {
+            google: {
+                families: ['Open+Sans:300,400,600,700,800', 'Poppins:300,400,500,600,700', 'Shadows+Into+Light:400', 'Segoe+Script:300,400,500,600']
+            }
+        };
+        (function (d) {
+            var wf = d.createElement('script'),
+                s = d.scripts[0];
+            wf.src = '~/assets/js/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+    </script>
+   
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css">
+
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="~/assets/css/demo2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/vendor/fontawesome-free/css/all.min.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="container">
+                <div class="header-top d-flex align-items-center w-100">
+                    <div class="header-left">
+                        <p class="top-message ls-0 d-none d-sm-block">info@divineprecincts.com</p>
+                    </div>
+                    <!-- End .header-left -->
+
+                    <div class="header-right header-dropdowns w-sm-100">
+                        <div class="header-dropdown dropdown-expanded d-none d-lg-block mr-2">
+                            <a href="#">Links</a>
+                            <div class="header-menu">
+                                <ul>
+                                    <li><a href="~/Home/DashBoard">My Account</a></li>
+                                    <li><a href="~/Sales/WishList">My Wishlist</a></li>
+                                    @if (ViewBag.LoggedUser != null)
+                                    {
+                                        <li><a href="~/Sales/Cart?id=@ViewBag.LoggedUser.userId">Cart</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="~/Sales/Cart">Cart</a></li>
+                                    }
+                                    <li><a href="~/Home/ContactUs">Contact Us</a></li>
+
+                                    @if (ViewBag.LoggedUser == null)
+                                    {
+                                        <li><a href="~/Authenticate/Login">Log In</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            @*<a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    @ViewBag.LoggedUser.userName
+                                                </a>
+                                                <div class="dropdown-menu drop_down">
+                                                    <div class="menus">
+                                                        <a class="dropdown-item" href="~/Authenticate/Logout"><i class="fa fa-user"></i>Logout</a>
+                                                    </div>
+                                                </div>*@
+                                            <div class="dropdown myaccount show">
+                                                <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    @ViewBag.LoggedUser.userName <i class="fa fa-angle-down"></i>
+                                                </a>
+
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item" href="~/Authenticate/Logout">Logout</a>
+
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <!-- End .header-menu -->
+                        </div>
+
+                        <span class="separator"></span>
+
+                        <div>
+                            <p class="top-message ls-0 d-none d-sm-block">Purohit Services<br />Ph: +9110538636</p>
+                        </div>
+                        <!-- End .social-icons -->
+                    </div>
+                    <!-- End .header-right -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-top -->
+
+            <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}">
+                <div class="container">
+                    <div class="header-left col-lg-3 w-auto pl-0">
+
+                        <a href="~/Home/Index" class="">
+                            <img src="~/assets/images/logo-new.png" alt="Porto Logo">
+                        </a>
+                    </div>
+                    <!-- End .header-left -->
+
+                    <div class="header-right w-lg-max ml-0">
+                        <div class="header-icon mb-0 header-search header-search-inline header-search-category w-lg-max pl-3 pr-1">
+                            <a href="#" class="search-toggle" role="button" title="Search">
+                                <i class="icon-search-3"></i>
+                            </a>
+                            <form action="~/Home/ProductsList" method="get">
+                                <div class="header-search-wrapper">
+                                    <input type="search" class="form-control bg-white" name="type" id="qq" placeholder="Search...">
+                                    <div class="select-custom bg-white">
+                                        <select id="category" name="catDetail">
+                                            <option value="0,0">All Categories</option>
+                                            @foreach (var c in ViewBag.HeadCats)
+                                            {
+                                                <option value="@c.CategoryId,0">@c.CategoryName</option>
+                                                @if (c.SubCats != null)
+                                                {
+                                                    @foreach (var s in c.SubCats)
+                                                    {
+                                                        <option value="@c.CategoryId,@s.SubCategoryId">-@s.SubCategoryName </option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <!-- End .select-custom -->
+                                    <button class="btn icon-magnifier pb-1 bg-white" type="submit" title="Search"></button>
+                                </div>
+                                <!-- End .header-search-wrapper -->
+                            </form>
+                        </div>
+                        <!-- End .header-search -->
+                        @*<div class="header-contact d-none d-lg-flex pl-4 ml-3 mr-xl-5">
+                                <img alt="phone" src="~/assets/images/phone-white.png" width="30" height="30" class="pb-1">
+                                <h6>Call us now<a href="tel:#" class="font1">+123 5678 890</a></h6>
+                            </div>*@
+
+                        <a href="~/Home/DashBoard" class="header-icon d-inline-block" title="DashBoard">
+                            <i class="icon-user-2"></i>
+                        </a>
+
+                        <a href="~/Sales/WishList" class="header-icon d-inline-block" title="Wishlist">
+                            <i class="icon-wishlist"></i>
+                        </a>
+
+                        <div class="dropdown cart-dropdown">
+                            @if (ViewBag.LoggedUser != null)
+                            {
+                                @if (ViewBag.CartCount > 0)
+                                {
+                                    <a @*href="~/Sales/Cart?id=@ViewBag.LoggedUser.userId"*@ title="Cart" class="dropdown-arrow cart-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                        <i class="minicart-icon"></i>
+                                        @if (ViewBag.CartCount != null)
+                                        {
+                                            <span class="cart-count badge-circle">@ViewBag.CartCount</span>
+                                        }
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a title="Cart" class="dropdown-arrow cart-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                        <i class="minicart-icon"></i>
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                <a href="~/Authenticate/Login" title="Cart">
+                                    <i class="minicart-icon"></i>
+                                </a>
+                            }
+                            <div class="cart-overlay"></div>
+
+                            <div class="dropdown-menu mobile-cart">
+                                <a href="#" title="Close (Esc)" class="btn-close">×</a>
+
+                                <div class="dropdownmenu-wrapper custom-scrollbar">
+                                    <div class="dropdown-cart-header">Shopping Cart</div>
+                                    <!-- End .dropdown-cart-header -->
+
+                                    <div class="dropdown-cart-products">
+                                        @{
+                                            decimal total = 0;
+                                        }
+                                        @if (ViewBag.LoggedUser != null)
+                                        {
+                                            @if (ViewBag.CartCount > 0)
+                                            {
+                                                @foreach (var p in ViewBag.cartprods)
+                                                {
+                                                    <div class="product">
+                                                        <div class="product-details">
+                                                            <h4 class="product-title">
+                                                                <a href="#">@p.Title</a>
+                                                            </h4>
+                                                            @{
+                                                                var amt = p.NumberProducts * p.Price;
+                                                                total += (decimal)amt;
+                                                            }
+                                                            <span class="cart-product-info">
+                                                                <span class="cart-product-qty">@p.NumberProducts</span> × Rs.@(String.Format(Indian,"{0:N}",p.Price))
+                                                            </span>
+                                                        </div>
+
+                                                        <!-- End .product-details -->
+
+                                                        <figure class="product-image-container">
+                                                            <a href="#" class="product-image">
+                                                                <img src="~/ProductImages/@p.Image1" alt="product" width="80" height="80">
+                                                            </a>
+                                                        </figure>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <a href="~/Home/Index" class="btn btn-primary">Go Shop</a>
+                                            }
+                                        }
+                                        <!-- End .product -->
+                                        <!-- End .product -->
+                                    </div>
+                                    <!-- End .cart-product -->
+                                    @if (ViewBag.CartCount > 0)
+                                    {
+                                        <div class="dropdown-cart-total">
+                                            <span>SUBTOTAL:</span>
+
+                                            <span class="cart-total-price float-right">Rs.@(String.Format(Indian, "{0:N}", total))</span>
+                                        </div>
+                                        <!-- End .dropdown-cart-total -->
+
+                                        <div class="dropdown-cart-action">
+                                            <a href="~/Sales/Cart" class="btn btn-gray btn-block view-cart">
+                                                View
+                                                Cart
+                                            </a>
+                                            @if (ViewBag.CartCount > 0)
+                                            {
+                                                <a href="~/Sales/CheckOut" class="btn btn-dark btn-block">Checkout</a>
+                                            }
+                                        </div>
+                                    }
+                                        <!-- End .dropdown-cart-total -->
+                                    </div>
+                                <!-- End .dropdownmenu-wrapper -->
+                            </div>
+                            <!-- End .dropdown-menu -->
+                        </div>
+                        <!-- End .dropdown -->
+                    </div>
+                    <!-- End .header-right -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-middle -->
+
+            <div class="header-bottom sticky-header d-lg-block d-none" data-sticky-options="{'mobile': false}">
+                <div class="container-fluid">
+                    <div class="header-left">
+                        <a href="~/Home/Index" class="logo">
+                            <img src="~/assets/images/logo-new.png" alt="Porto Logo">
+                        </a>
+                    </div>
+                    <div class="header-center">
+                        <nav class="main-nav w-100">
+                            <ul class="menu">
+                                <li class="active">
+                                    <a href="~/Home/Index">Home</a>
+                                </li>
+                                @foreach (var c in ViewBag.HeadCats)
+                                {
+                                    <li>
+                                        <a href="~/Home/ProductsList?catDetail=@c.CategoryId,0">@c.CategoryName</a>
+                                        @if (c.subCount > 0)
+                                        {
+                                            @if (c.SubCats.Count > 4)
+                                            {
+                                                <div class="megamenu megamenu-fixed-width megamenu-3cols">
+                                                    <div class="row">
+                                                        @foreach (var s in c.SubCats)
+                                                        {
+                                                            <div class="col-lg-3">
+                                                                @*<a href="#" class="nolink">General Items</a>*@
+                                                                <ul class="submenu w-100">
+                                                                    <li><a href="~/Home/ProductsList?catDetail=@c.CategoryId,@s.SubCategoryId">@s.SubCategoryName</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <ul class="submenu w-100">
+                                                    @foreach (var s in c.SubCats)
+                                                    {
+
+
+                                                        <li><a href="~/Home/ProductsList?catDetail=@c.CategoryId,@s.SubCategoryId">@s.SubCategoryName</a></li>
+
+
+                                                    }
+                                                </ul>
+                                            }
+
+                                        }
+                                    </li>
+                                }
+
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+                <!-- End .container -->
+            </div>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+            <script src="~/AdminAssets/plugins/jQuery/jquery-1.12.4.min.js"></script>
+            <!-- End .header-bottom -->
+        </header>
+        <!-- End .header -->
+
+        @RenderBody()
+        <!-- End .main -->
+
+        <footer class="footer bg-dark position-relative">
+            <div class="footer-middle">
+                <div class="container position-static">
+                    <div class="footer-ribbon bg-primary text-white ls-0">
+                        Get in touch
+                    </div>
+                    <!-- End .footer-ribbon -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4">
+                            <div class="widget">
+                                <h4 class="widget-title font-weight-bold">Contact Info</h4>
+                                <ul class="contact-info">
+                                    <li>
+                                        <span class="contact-info-label">Address:</span>
+                                        2-2-1130/9, Prashant nagar,  Shivam Road,<br />  Nallakunta,  Hyderabad
+                                    </li>
+                                    <li>
+                                        <span class="contact-info-label">Phone:</span><a href="tel:">
+                                            91105 38636
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                                <!-- End .social-icons -->
+                            </div>
+                            <!-- End .widget -->
+                        </div>
+                        <!-- End .col-lg-3 -->
+
+                        <div class="col-lg-9 col-md-8">
+                            <!--<div class="widget widget-newsletter">
+                                <h4 class="widget-title">Subscribe newsletter</h4>
+                                <div class="row align-items-center">
+                                    <div class="col-lg-6 col-md-12 mb-1">
+                                        <p class="mb-0">Get all the latest information on Events, Sales and Offers. Sign up for newsletter today.</p>
+                                    </div>-->
+                            <!-- End .col-lg-6 -->
+                            <!--<div class="col-lg-6 col-md-12 mb-1">
+                                <form action="#" class="d-flex mb-0 w-100">
+                                    <input type="email" class="form-control mb-0" placeholder="Email Address" required>
+
+                                    <input type="submit" class="btn btn-primary shadow-none" value="Subscribe">
+                                </form>
+                            </div>-->
+                            <!-- End .col-lg-6 -->
+                            <!--</div>-->
+                            <!-- End .row -->
+                            <!--</div>-->
+                            <!-- End .widget -->
+
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="widget">
+                                        <h4 class="widget-title mb-1">Customer Service</h4>
+                                        <ul class="contact-info">
+                                            <li>
+                                                <span class="contact-info-label">Email:</span> <a href="mailto:mail@example.com">mail@example.com</a>
+                                            </li>
+                                            <li>
+                                                <span class="contact-info-label">Working Days/Hours:</span> Mon - Sun / 9:00 AM - 8:00 PM
+                                            </li>
+                                        </ul>
+                                        @*<div class="links link-parts row">
+                                                <ul class="link-part col-lg-6 col-md-12 mb-0">
+                                                    <li><a href="~/Home/AboutUs">About us</a></li>
+                                                    <li><a href="~/Home/ContactUs">Contact us</a></li>
+                                                    <li><a href="~/Home/DashBoard">My account</a></li>
+                                                </ul>
+                                                <ul class="link-part col-lg-6 col-md-12">
+                                                    <li><a href="#">Order history</a></li>
+                                                    <li><a href="#">Advanced search</a></li>
+                                                    @if (ViewBag.LoggedUser == null)
+                                                    {
+                                                    <li><a href="~/Authenticate/Login">Login</a></li>
+                                                    }
+                                                </ul>
+                                            </div>*@
+                                    </div>
+                                    <!-- End .widget -->
+                                </div>
+
+
+                                <!-- End .col-sm-6 -->
+
+                                <div class="col-sm-4">
+                                    <div class="widget">
+                                        <h4 class="widget-title mb-1">Information</h4>
+
+                                        <div class="links link-parts row">
+                                            <ul class="link-part col-lg-6 col-md-12 mb-0">
+                                                <li><a href="~/Home/AboutUs">About Us</a></li>
+                                                <li><a href="~/Home/refundPolicy">Refund Policy</a></li>
+                                                <li><a href="~/Home/PrivacyPolicy">Privacy Policy</a></li>
+                                                <li><a href="~/Home/FAQs">FAQ's</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- End .widget -->
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="widget">
+                                        <h4 class="widget-title mb-1">Social Links</h4>
+                                        <div class="links link-parts">
+                                            <div class="social-icons">
+                                                <ul>
+                                                    <li><a href="https://www.facebook.com/" target="_blank" title="Facebook"><img src="~/assets/images/icons/facebook.png" width="30" /></a></li>
+                                                    <li><a href="https://www.twitter.com/" target="_blank" title="Twitter"><img src="~/assets/images/icons/twitter.png" width="30" /></a></li>
+                                                    <li><a href="https://www.linkedin.com/" target="_blank" title="Linkedin"><img src="~/assets/images/icons/linkedin.png" width="30" /></a></li>
+                                                    <li><a href="https://www.instagram.com/" target="_blank" title="instagram"><img src="~/assets/images/icons/instagram.png" width="30" /></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End .widget -->
+                                </div>
+
+                                <!-- End .col-sm-6 -->
+                            </div>
+                            <!-- End .row -->
+                        </div>
+                        <!-- End .col-lg-9 -->
+                    </div>
+                    <!-- End .row -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .footer-middle -->
+
+            <div class="container">
+                <div class="footer-bottom d-sm-flex align-items-center">
+                    <div class="footer-left">
+                        <span class="footer-copyright">© Divine Precincts eCommerce. 2021. All Rights Reserved</span>
+                    </div>
+
+                    <div class="footer-right ml-auto mt-1 mt-sm-0">
+                        <div class="payment-icons mr-0">
+                            <span class="payment-icon visa"></span>
+                            <span class="payment-icon paypal"></span>
+                            <span class="payment-icon stripe"></span>
+                            <span class="payment-icon verisign"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End .footer-bottom -->
+        </footer>
+        <!-- End .footer -->
+    </div>
+    <!-- End .page-wrapper -->
+
+    <div class="loading-overlay">
+        <div class="bounce-loader">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+
+    <div class="mobile-menu-overlay"></div>
+    <!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li><a href="demo2.html">Home</a></li>
+                    <li>
+                        <a href="#">Categories</a>
+                        <ul>
+                            <li><a href="#">Full Width Banner</a></li>
+                            <li><a href="#">Boxed Slider Banner</a></li>
+                            <li><a href="#">Boxed Image Banner</a></li>
+                            <li><a href="#">Left Sidebar</a></li>
+                            <li><a href="#">Right Sidebar</a></li>
+                            <li><a href="#">Off Canvas Filter</a></li>
+                            <li><a href="#">Horizontal Filter 1</a></li>
+                            <li><a href="#">Horizontal Filter 2</a></li>
+                            <li><a href="#">List Types</a></li>
+                            <li><a href="#">Ajax Infinite Scroll</a></li>
+                            <li><a href="#">3 Columns Products</a></li>
+                            <li><a href="#">4 Columns Products</a></li>
+                            <li><a href="#">5 Columns Products</a></li>
+                            <li><a href="#">6 Columns Products</a></li>
+                            <li><a href="#">7 Columns Products</a></li>
+                            <li><a href="#">8 Columns Products</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Products</a>
+                        <ul>
+                            <li>
+                                <a href="#" class="nolink">PRODUCT PAGES</a>
+                                <ul>
+                                    <li><a href="#">SIMPLE PRODUCT</a></li>
+                                    <li><a href="#">VARIABLE PRODUCT</a></li>
+                                    <li><a href="#">SALE PRODUCT</a></li>
+                                    <li><a href="#">FEATURED & ON SALE</a></li>
+                                    <li><a href="#">WIDTH CUSTOM TAB</a></li>
+                                    <li><a href="#">WITH LEFT SIDEBAR</a></li>
+                                    <li><a href="#">WITH RIGHT SIDEBAR</a></li>
+                                    <li><a href="#">ADD CART STICKY</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" class="nolink">PRODUCT LAYOUTS</a>
+                                <ul>
+                                    <li><a href="#">EXTENDED LAYOUT</a></li>
+                                    <li><a href="#">GRID IMAGE</a></li>
+                                    <li><a href="#">FULL WIDTH LAYOUT</a></li>
+                                    <li><a href="#">STICKY INFO</a></li>
+                                    <li><a href="#">LEFT & RIGHT STICKY</a></li>
+                                    <li><a href="#">TRANSPARENT IMAGE</a></li>
+                                    <li><a href="#">CENTER VERTICAL</a></li>
+                                    <li><a href="#">BUILD YOUR OWN</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Pages<span class="tip tip-hot">Hot!</span></a>
+                        <ul>
+                            <li>
+                                <a href="#">Wishlist</a>
+                            </li>
+                            <li>
+                                <a href="#">Shopping Cart</a>
+                            </li>
+                            <li>
+                                <a href="#">Checkout</a>
+                            </li>
+                            <li>
+                                <a href="#">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="#">Login</a>
+                            </li>
+                            <li>
+                                <a href="#">Forgot Password</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Blog</a></li>
+                    <li>
+                        <a href="#">Elements</a>
+                        <ul class="custom-scrollbar">
+                            <li><a href="#">Accordion</a></li>
+                            <li><a href="#">Alerts</a></li>
+                            <li><a href="#">Animations</a></li>
+                            <li><a href="#">Banners</a></li>
+                            <li><a href="#">Buttons</a></li>
+                            <li><a href="#">Call to Action</a></li>
+                            <li><a href="#">Count Down</a></li>
+                            <li><a href="#">Counters</a></li>
+                            <li><a href="#">Headings</a></li>
+                            <li><a href="#">Icons</a></li>
+                            <li><a href="#">Info box</a></li>
+                            <li><a href="#">Posts</a></li>
+                            <li><a href="#">Products</a></li>
+                            <li><a href="#">Product Categories</a></li>
+                            <li><a href="#">Tabs</a></li>
+                            <li><a href="#">Testimonials</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="mobile-menu mt-2 mb-2">
+                    <li class="border-0">
+                        <a href="#">
+                            Special Offer!
+                        </a>
+                    </li>
+                    <li class="border-0">
+                        <a href="https://1.envato.market/DdLk5" target="_blank">
+                            Buy Porto!
+                            <span class="tip tip-hot">Hot</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="mobile-menu">
+                    <li><a href="#">My Account</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">My Wishlist</a></li>
+                    <li><a href="#">Cart</a></li>
+                    <li><a href="#" class="login-link">Log In</a></li>
+                </ul>
+            </nav>
+            <!-- End .mobile-nav -->
+
+            <form class="search-wrapper mb-2" action="#">
+                <input type="text" class="form-control mb-0" placeholder="Search..." required />
+                <button class="btn icon-search text-white bg-transparent p-0" type="submit"></button>
+            </form>
+
+            <div class="social-icons">
+                <a href="#" class="social-icon social-facebook icon-facebook" target="_blank">
+                </a>
+                <a href="#" class="social-icon social-twitter icon-twitter" target="_blank">
+                </a>
+                <a href="#" class="social-icon social-instagram icon-instagram" target="_blank">
+                </a>
+            </div>
+        </div>
+        <!-- End .mobile-menu-wrapper -->
+    </div>
+    <!-- End .mobile-menu-container -->
+
+    <div class="sticky-navbar">
+        <div class="sticky-info">
+            <a href="#">
+                <i class="icon-home"></i>Home
+            </a>
+        </div>
+        <div class="sticky-info">
+            <a href="#" class="">
+                <i class="icon-bars"></i>Categories
+            </a>
+        </div>
+        <div class="sticky-info">
+            <a href="#" class="">
+                <i class="icon-wishlist-2"></i>Wishlist
+            </a>
+        </div>
+        <div class="sticky-info">
+            <a href="#" class="">
+                <i class="icon-user-2"></i>Account
+            </a>
+        </div>
+        <div class="sticky-info">
+            <a href="#" class="">
+                <i class="icon-shopping-cart position-relative">
+                    <span class="cart-count badge-circle">3</span>
+                </i>Cart
+            </a>
+        </div>
+    </div>
+
+    <!--
+        <div class="newsletter-popup mfp-hide bg-img" id="newsletter-popup-form" style="background: #f1f1f1 no-repeat center/cover url(~/assets/images/newsletter_popup_bg.jpg)">
+            <div class="newsletter-popup-content">
+                <img src="~/assets/images/logo.png" width="111" height="44" alt="Logo" class="logo-newsletter">
+                <h2>Subscribe to newsletter</h2>
+
+                <p>
+                    Subscribe to the Porto mailing list to receive updates on new arrivals, special offers and our promotions.
+                </p>
+
+                <form action="#">
+                    <div class="input-group">
+                        <input type="email" class="form-control" id="newsletter-email" name="newsletter-email" placeholder="Your email address" required />
+                        <input type="submit" class="btn btn-primary" value="Submit" />
+                    </div>
+                </form>
+                <div class="newsletter-subscribe">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" value="0" id="show-again" />
+                        <label for="show-again" class="custom-control-label">
+                            Don't show this popup again
+                        </label>
+                    </div>
+                </div>
+            </div>
+             End .newsletter-popup-content
+
+            <button title="Close (Esc)" type="button" class="mfp-close">
+                ×
+            </button>
+        </div>
+    -->
+    <!-- End .newsletter-popup -->
+
+    <a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
+
+    <!-- Plugins JS File -->
+    <script src="~/assets/js/jquery.min.js"></script>
+    <script src="~/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/optional/imagesloaded.pkgd.min.js"></script>
+    <script src="~/assets/js/optional/isotope.pkgd.min.js"></script>
+    <script src="~/assets/js/plugins.min.js"></script>
+    <script src="~/assets/js/jquery.appear.min.js"></script>
+    <script src="~/assets/js/main.min.js"></script>
+    <script src="~/js/MyScripts.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+</body>
+
+
+</html>

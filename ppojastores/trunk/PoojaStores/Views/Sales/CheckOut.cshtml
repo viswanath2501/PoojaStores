@@ -1,0 +1,536 @@
+﻿@{
+    System.Globalization.CultureInfo Indian = new System.Globalization.CultureInfo("hi-IN");
+    decimal total = 0;
+    decimal tx = 0;
+    decimal totwithTax = 0;
+    int adcnt = ViewBag.addressCount;
+}
+<main class="main">
+    <div class="container-fluid d-flex flex-column align-items-center bg-gray p-4">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item disabled"><a href="~/Sales/Cart">
+                        Shopping Cart</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Checkout
+                    </li>
+                    <li class="breadcrumb-item disabled" aria-current="page">
+                        Order Complete
+                    </li>
+                </ol>
+            </div>
+        </nav>
+    </div>
+    @*<ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
+            <li>
+                <a href="cart.html">Shopping Cart</a>
+            </li>
+            <li class="active">
+                <a href="checkout.html">Checkout</a>
+            </li>
+            <li class="disabled">
+                <a href="#">Order Complete</a>
+            </li>
+        </ul>*@
+    <div class="container checkout-container">
+        <div class="row">
+            <div class="col-lg-7">
+                <ul class="checkout-steps">
+                    <li>
+                        <h2 class="step-title">Billing Address</h2>
+                       @if (ViewBag.addressCount > 0)
+                        {
+                            <h2 class="orange">Select a delivery address</h2>
+                            <ul class="checkout-steps deliveryList ">
+                                @foreach (var a in ViewBag.address)
+                                {
+                                    if (a.Address2 == null)
+                                    {
+                                        <li>
+                                            <input type="radio" name="Addre" id="" value="@a.Id"><b>@a.FullName</b> @a.Address1, @a.LandMark, @a.CityName,@a.StateName,@a.CountryName, @a.ZipCode,<a href="javascript:void(0)" onclick="EditAddressOpenForm(@a.Id)">Edit Address</a> @*| <a href="javascript:void(0)">Add delivery instructions</a>*@
+                                        </li>
+                                    }
+                                    else
+                                    {
+                            <li>
+                                <input type="radio" name="Addre" id="" value="@a.Id"><b>@a.FullName</b> @a.Address1, @a.Address2,@a.LandMark, @a.CityName,@a.StateName,@a.CountryName, @a.ZipCode,<a href="javascript:void(0)" onclick="EditAddressOpenForm(@a.Id)">Edit Address</a> @*| <a href="javascript:void(0)">Add delivery instructions</a>*@
+                            </li>
+                                    }
+                                }
+                            </ul>
+                            <br />                            
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox mt-0">
+                                    <input type="checkbox" class="custom-control-input" id="different-shipping" onclick="SaveAddressOpenForm()" />
+                                    <label class="custom-control-label" for="different-shipping">
+                                        Add new Address?
+                                    </label>
+                                </div>
+                            </div>                            
+                        }
+                        else
+                        {
+                            <h2 class="orange">Fill the address form</h2>
+                        }
+                        <div id="AddressForm">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>
+                                                FullName <abbr class="required">*</abbr>
+                                            </label>
+                                            <input type="text" class="form-control" value="@ViewBag.LoggedUser.userName" id="fullname" required />
+                                            <p id="fulNme" class="text-danger"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Landmark<abbr class="required">*</abbr></label>
+                                            <input type="text" class="form-control" id="landmark" required />
+                                            <p id="land" class="text-danger"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-1 pb-2">
+                                    <label>
+                                        Address1 <abbr class="required">*</abbr>
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="House number and street name" id="address1" required />
+                                    <p id="add1" class="text-danger"></p>
+                                </div>
+                                <label>
+                                    Address2
+                                </label>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Apartment, suite, unit, etc. (optional)" id="address2" required />
+                                </div>
+                                <div class="form-group mb-1 pb-2">
+                                    <label>
+                                        Street <abbr class="required">*</abbr>
+                                    </label>
+                                    <input type="text" class="form-control" placeholder="House number and street name" id="street" required />
+                                    <p id="loc" class="text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Address Type <span class="required">*</span></label>
+                                    @Html.DropDownList("addrId", new SelectList(ViewBag.AddressTypes, "addressTypeId", "AddressTypeName", "addrId"), new { @id = "addresssssId", @class = "form-control" })
+                                </div>
+                                <div class="select-custom">
+                                    <label>Country<span class="required">*</span></label>
+                                    @Html.DropDownList("counId", new SelectList(ViewBag.countries, "CountryId", "CountryName", "0"), new { @id = "cntId", @class = "form-control", @onChange = "GetStates()" })
+
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        State <abbr class="required">*</abbr>
+                                    </label>
+                                    @Html.DropDownList("statId", new SelectList(ViewBag.states, "StateId", "StateName", "0"), new { @id = "stateId", @class = "form-control", @onChange = "GetCities()" })
+                                </div>
+                                <div class="select-custom">
+                                    <label>
+                                        City <abbr class="required">*</abbr>
+                                    </label>
+                                    @Html.DropDownList("citId", new SelectList(ViewBag.cities, "CityId", "CityName", "0"), new { @id = "cityId", @class = "form-control" })
+
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Postcode / ZIP <abbr class="required">*</abbr>
+                                    </label>
+                                    <input type="number" class="form-control" id="zipcode" required />
+                                    <p id="post" class="text-danger"></p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="button" class="btn btn-dark btn-place-order" value=" Save " onclick="FinalAddress()" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="order-comments">Order notes (optional)</label>
+                            <textarea class="form-control" placeholder="Notes about your order, e.g. special notes for delivery." id="spNote"></textarea>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- End .col-lg-7 -->
+
+            <div class="col-lg-5">
+                <div class="order-summary">
+                    <h3>YOUR ORDER</h3>
+
+                    <table class="table table-mini-cart">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Product's</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in ViewBag.Prods)
+                            {
+                                <tr>
+                                    <td class="product-col">
+                                        <h3 class="product-title">
+                                            @c.Title ×
+                                            <span class="product-qty">@c.NumberProducts</span>
+                                        </h3>
+                                    </td>
+                                    @{
+                                        var ecTotal = c.NumberProducts * c.Price;
+                                        total += ecTotal;
+                                        var singletax = c.GStPrice * c.NumberProducts;
+                                        tx += (decimal)singletax;
+                                    }
+                                    <td class="price-col  bor-none">
+                                        <span class=" bor-none">₹.@(String.Format(Indian,"{0:N}",ecTotal))</span>
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <td><h3>Tax Amount</h3></td>
+                                <td>₹.@(String.Format(Indian,"{0:N}",tx))</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            @{ totwithTax = total + tx;}
+                            <tr class="cart-subtotal">
+                                <td>
+                                    <h4>Subtotal</h4>
+                                </td>
+
+                                <td class="price-col">
+                                    <span>₹.@(String.Format(Indian,"{0:N}",totwithTax))</span>
+                                </td>
+                            </tr>
+                            <!--<tr class="order-shipping">
+                                <td class="text-left" colspan="2">
+                                    <h4 class="m-b-sm">Shipping</h4>
+
+                                    <div class="form-group form-group-custom-control">
+                                        <div class="custom-control custom-radio d-flex">
+                                            <input type="radio" class="custom-control-input" name="radio" checked />
+                                            <label class="custom-control-label">Local Pickup</label>
+                                        </div>-->
+                                        <!-- End .custom-checkbox -->
+                                    <!--</div>-->
+                                    <!-- End .form-group -->
+
+                                    <!--<div class="form-group form-group-custom-control mb-0">
+                                        <div class="custom-control custom-radio d-flex mb-0">
+                                            <input type="radio" name="radio" class="custom-control-input">
+                                            <label class="custom-control-label">Flat Rate</label>
+                                        </div>-->
+                                        <!-- End .custom-checkbox -->
+                                    <!--</div>-->
+                                    <!-- End .form-group -->
+                                <!--</td>
+                            </tr>-->
+                            <tr class="order-total">
+                                <td>
+                                    <h4>Total</h4>
+                                </td>
+                                <td>
+                                    <b class="total-price"><span>₹.@(String.Format(Indian,"{0:N}",totwithTax))</span></b>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="payment-methods">
+                        <h4 class="">Payment methods</h4>
+                    </div>
+                    <br />
+                    @if (ViewBag.CartCount > 0)
+                    {
+                    <div class="row">
+                        @*<div class="col-md-6">
+                            <input type="button" class="btn btn-dark btn-place-order" value=" Cash On Delivery " onclick="FinalCOD()" />
+                            
+                        </div>*@
+                        <div class="col-md-12">
+                            <input type="button" class="btn btn-dark btn-place-order" value=" Proceed to Payment" onclick="FinalPayment()" />
+                            <p class="text-danger"><span id="addrSelect"></span></p>
+                        </div>
+                    </div>
+                    }
+                </div>
+                <!-- End .cart-summary -->
+            </div>
+            <!-- End .col-lg-5 -->
+        </div>
+        <!-- End .row -->
+    </div>
+    <!-- End .container -->
+</main>
+<!-- End .main -->
+<script>
+    var x = 1;
+    $(document).ready(function () {
+        $('#AddressForm').hide();
+        if (@ViewBag.addressCount == 0) {           
+            SaveAddressOpenForm();
+        }
+    })
+    var addidlatest = 0;
+    
+    function GetStates() {
+        var cotid = $('#cntId option:selected').val();
+        $.ajax({
+            url: GlobalUrl + "Common/GetAllStates?countryId=" + cotid,
+            type: 'post',
+            data: '{}',
+            success: function (res) {
+                var r = res.result.length;
+                var row = '';
+
+                if (r > 0) {
+                    for (var i = 0; i < r; i++) {
+                        row = row + '<option value="' + res.result[i].stateId + '">' + res.result[i].stateName + '</option>';
+                    }
+                }
+                $('#stateId').html('');
+                $('#stateId').html(row);
+            }
+        });
+    }
+    function GetCities() {
+        var sid = $('#stateId option:selected').val();
+        $.ajax({
+            url: GlobalUrl + "Common/GetAllCities?stateId=" + sid,
+            type: 'post',
+            data: '{}',
+            success: function (res) {
+                var r = res.result.length;
+                var row = '';
+
+                if (r > 0) {
+                    for (var i = 0; i < r; i++) {
+                        row = row + '<option value="' + res.result[i].cityId + '">' + res.result[i].cityName + '</option>';
+                    }
+                }
+                $('#cityId').html('');
+                $('#cityId').html(row);
+            }
+        });
+    }
+    function GetCitie(sd,cd) {
+        var sid = $('#stateId option:selected').val();
+        $.ajax({
+            url: GlobalUrl + "Common/GetAllCities?stateId=" + sd,
+            type: 'post',
+            data: '{}',
+            success: function (res) {
+                var r = res.result.length;
+                var row = '';
+
+                if (r > 0) {
+                    for (var i = 0; i < r; i++) {
+                        if (res.result[i].cityId == cd) {
+                            row = row + '<option value="' + res.result[i].cityId + '" selected>' + res.result[i].cityName + '</option>';
+                        } else {
+                            row = row + '<option value="' + res.result[i].cityId + '">' + res.result[i].cityName + '</option>';
+                        }
+                    }
+                }
+                $('#cityId').html('');
+                $('#cityId').html(row);
+            }
+        });
+    }
+    //function getaddressTypes(id) {
+    //    $.ajax({
+    //        url: GlobalUrl + "Common/GetAllAddressTypes",
+    //        type: 'post',
+    //        data: '{}',
+    //        success: function (res) {
+    //            var r = res.result.length;
+    //            var row = '';
+
+    //            if (r > 0) {
+    //                for (var i = 0; i < r; i++) {
+    //                    if (res.result[i].addressTypeId == id) {
+    //                        row = row + '<option value="' + res.result[i].addressTypeId + '" selected>' + res.result[i].AddressTypeName + '</option>';
+    //                    } else {
+    //                        row = row + '<option value="' + res.result[i].addressTypeId + '">' + res.result[i].AddressTypeName + '</option>';
+    //                    }
+    //                }
+    //            }
+    //            $('#addId').html('');
+    //            $('#addId').html(row);
+    //        }
+    //    });
+    //}
+    function EditAddressOpenForm(id) {
+        $.ajax({
+            url: GlobalUrl + "Sales/GetAddressById?id=" + id,
+            type: 'post',
+            data: '{}',
+            success: function (result) {
+                if (result.result.id > 0) {
+
+                    $('#fullname').val(result.result.fullName);
+                    $('#landmark').val(result.result.landMark);
+                    $('#address1').val(result.result.address1);
+                    $('#address2').val(result.result.address2);
+                    $('#addresssssId').val(result.result.addressTypeId);
+                    $('#street').val(result.result.locationStreet);
+                    //$('#cntId').val(result.result.countryId);
+                    $('#stateId').val(result.result.stateId);
+                    GetCitie(result.result.stateId, result.result.cityId);
+                    /*$('#cityId').val(result.result.cityId);*/
+                    $('#zipcode').val(result.result.zipCode);
+                    $("#addId").val(result.result.id);
+                }
+            }
+        });
+        $('#AddressForm').show();        
+        $("#different-shipping").prop('checked', false);
+        addidlatest = id;
+    }
+    function SaveAddressOpenForm() {
+        $('#fullname').val('@ViewBag.LoggedUser.userName');
+        $('#landmark').val('');
+        $('#address1').val('');
+        $('#address2').val('');
+        $('#street').val('');
+        $('#zipcode').val('');
+        addidlatest = 0;        
+        if (x % 2 != 0) {
+            $('#AddressForm').show();
+        } else {
+            $('#AddressForm').hide();
+        }
+        x++;
+    }
+    function FinalAddress() {       
+            if ($('#landmark').val() == "" || $('#street').val() == "" || $('#address1').val() == "" || $('#fullname').val() == "" || $('#zipcode').val() === "") {
+                if ($('#landmark').val() == "") {
+                    $('#land').text("Landmark is Required");
+                }
+                if ($('#street').val() == "") {
+                    $('#loc').text("Location is Required")
+                }
+                if ($('#address1').val() == "") {
+                    $('#add1').text("Address is Required");
+                }
+                if ($('#zipcode').val() === "") {
+                    $('#post').text("Postcode is Required");
+                }
+                if ($('#fullname').val() == "") {
+                    $('#fulNme').text("Name is Required");
+                }
+            } else {
+                $.ajax({
+                    url: GlobalUrl + "Sales/SaveAddress",
+                    type: 'post',
+                    data: {
+                        'AddressTypeId': $('select#addresssssId option:selected').val(),
+                        'LandMark': $('#landmark').val(),
+                        'LocationStreet': $('#street').val(),
+                        'CountryId': $('#cntId').val(),
+                        'stateId': $('#stateId').val(),
+                        'cityId': $('#cityId').val(),
+                        'address1': $('#address1').val(),
+                        'address2': $('#address2').val(),
+                        'ZipCode': $('#zipcode').val(),
+                        'FullName': $("#fullname").val(),
+                        'Id': addidlatest,
+                    },
+                    success: function (result) {
+                        if (result.result.statusCode == 1) {
+                            window.location.href = "CheckOut";
+                        }
+                    }
+                });
+            }        
+    }
+    function FinalCOD() {
+        var radioValue = $("input[name='Addre']:checked").val();
+        if (radioValue == undefined || radioValue == "" || radioValue == null) {
+            $("#addrSelect").text("Please Select/Add a Address");
+        } else {
+            window.location = "CodSuccess?adId=" + radioValue;
+        }
+    }
+    function FinalPayment() {
+        var radioValue = $("input[name='Addre']:checked").val();
+        if (radioValue == undefined || radioValue == "" || radioValue == null) {
+            if (x % 2 == 0) {
+                if ($('#landmark').val() == "" || $('#street').val() == "" || $('#address1').val() == "" || $('#fullname').val() == "" || $('#zipcode').val() === "") {
+                    if ($('#landmark').val() == "") {
+                        $('#land').text("Landmark is Required");
+                    }
+                    if ($('#street').val() == "") {
+                        $('#loc').text("Location is Required")
+                    }
+                    if ($('#address1').val() == "") {
+                        $('#add1').text("Address is Required");
+                    }
+                    if ($('#zipcode').val() === "") {
+                        $('#post').text("Postcode is Required");
+                    }
+                    if ($('#fullname').val() == "") {
+                        $('#fulNme').text("Name is Required");
+                    }
+                } else {
+                    $.ajax({
+                        url: GlobalUrl + "Sales/SaveAddress",
+                        type: 'post',
+                        data: {
+                            'AddressTypeId': $('select#addresssssId option:selected').val(),
+                            'LandMark': $('#landmark').val(),
+                            'LocationStreet': $('#street').val(),
+                            'CountryId': $('#cntId').val(),
+                            'stateId': $('#stateId').val(),
+                            'cityId': $('#cityId').val(),
+                            'address1': $('#address1').val(),
+                            'address2': $('#address2').val(),
+                            'ZipCode': $('#zipcode').val(),
+                            'FullName': $("#fullname").val(),
+                            'Id': addidlatest,
+                        },
+                        success: function (result) {
+                            if (result.result.statusCode == 1) {
+                                $.ajax({
+                                    url: GlobalUrl + "Sales/AcceptCheckout",
+                                    type: 'post',
+                                    data: '{}',
+                                    success: function (result) {
+                                        if (result.r == false) {
+                                            $("#addrSelect").text("One/More Products are out of stock");
+                                        } else {
+                                            var note = $('#spNote').val();
+                                            window.location = "CreateOrder?adId=" + result.result.currentId + "&note=" + note;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            } else {                
+                $("#addrSelect").text("Please Select/Add a Address");
+            }
+            $("#addrSelect").text("Please Select/Add a Address");
+        } else {
+            $.ajax({
+                url: GlobalUrl + "Sales/AcceptCheckout",
+                type: 'post',
+                data: '{}',
+                success: function (result) {
+                    if (result.r == false) {
+                        $("#addrSelect").text("One/More Products are out of stock");
+                    } else {
+                        var note = $('#spNote').val();
+                        window.location = "CreateOrder?adId=" + radioValue + "&note=" + note;
+                    }
+                }
+            });            
+        }
+    }
+</script>

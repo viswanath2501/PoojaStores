@@ -1,0 +1,65 @@
+﻿@model PoojaStores.Models.Repositories.Entity.GSTMaster
+@{
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-book"></i>
+        </div>
+        <div class="header-title">
+            <h1>Add GST</h1>
+            <small>Master Data management.</small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <div class="content">
+        <div class="row">
+            <!-- Form controls -->
+            <div class="col-sm-12">
+                <div class="card all_btn_card" id="lobicard-custom-control1" data-sortable="true">
+                    <div class="card-header all_card_btn">
+                        <div class="row">
+                            <div class="card-title custom_title col-sm-6">
+                                <h5>Add GST</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="btn-group float-right" role="group">
+                                    <div class="buttonexport" id="buttonlist">
+                                        <a class="btn btn-add" href="~/Master/GST">
+                                            <i class="fa fa-reply mr-2"></i>Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="~/Master/GSTData" method="post">
+                            @Html.HiddenFor(m => m.MasterId)
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>GST Name</label>
+                                    @Html.TextBoxFor(m => m.GSTName, null, new { @placeholder = "Enter GST Name", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.GSTName, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label>GST Tax Value</label>
+                                    @Html.TextBoxFor(m => m.GSTTaxValue, null, new { @placeholder = "Enter Tax Percentage", @class = "form-control" })
+                                   
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-success serchgaptop"> Save</button>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content -->
+</div>

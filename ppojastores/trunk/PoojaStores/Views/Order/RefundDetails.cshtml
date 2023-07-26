@@ -1,0 +1,40 @@
+﻿@model PoojaStores.Models.ModelClasses.RefundDetailsModel
+@{ 
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+    System.Globalization.CultureInfo Indian = new System.Globalization.CultureInfo("hi-IN");
+}
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="refundDetails">
+                <ul class="refundAlign">
+                    <li>
+                        <h3>Refund Details</h3>
+                    </li>
+                    <li>Transaction Id : - @Model.TransId</li>
+                    <li>Order Id : - @Model.order_id</li>
+                    @{
+                        DateTime co = Convert.ToDateTime(Model.orderedOn);
+                    }
+                    <li>Order Date : - @co.ToString("d")</li>
+                    <li>
+                        <p>Paid : - @(String.Format(Indian,"{0:N}",Model.PaidAmount))</p>
+                    </li>
+                    <li>
+                        cancelation Charges : - @(String.Format(Indian,"{0:N}",Model.CancelationCharges))
+                    </li>
+                    <li>
+                        To Be Paid : - @(String.Format(Indian,"{0:N}",(Model.PaidAmount-Model.CancelationCharges)))
+                    </li>
+                </ul>
+                <div>
+                    <a class="btn btn-primary" href="~/Order/RefundedAmount?id=@ViewBag.detailsId">Refund</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    
+
+</div>

@@ -1,0 +1,147 @@
+﻿@model PoojaStores.Models.ModelClasses.ImageDisplayModel
+@{
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-image"></i>
+        </div>
+        <div class="header-title">
+            <h1>Edit Home Category Images</h1>
+            <small></small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <div class="content">
+        <div class="row">
+            <!-- Form controls -->
+            <div class="col-sm-12">
+                <div class="card all_btn_card" id="lobicard-custom-control1" data-sortable="true">
+                    <div class="card-header all_card_btn">
+                        <div class="row">
+                            <div class="card-title custom_title col-sm-3">
+                                <h5>Edit Category Image</h5>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Image Number : @Model.ImageNumber</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Image Size : @Model.ImageSize</label>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="btn-group float-right" role="group">
+                                    <div class="buttonexport" id="buttonlist">
+                                        <a class="btn btn-add" href="~/Image/AllCategoryImages">
+                                            <i class="fa fa-reply mr-2"></i>Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="~/Image/CategoryImageData" method="post" enctype="multipart/form-data">
+                            @Html.HiddenFor(m => m.ImageId)
+                            <div class="row">
+                                @if (Model.ImageNumber != 1)
+                                {
+                                    <div class="col-md-3">
+                                        <label>Select Category</label>
+                                        @Html.DropDownListFor(a => a.RelatedCategoryId, new SelectList(Model.CategoryDrops, "CategoryId", "CategoryName", Model.RelatedCategoryId), new { @class = "form-control" })
+                                    </div>
+                                }
+                                <div class="col-md-3">
+                                    <label>Image Title-1</label>
+                                    @Html.TextBoxFor(m => m.ImageTitle1, null, new { @placeholder = "Enter Image Title1", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.ImageTitle1, null, new { @class = "text-danger" })
+                                </div>
+                                @if (Model.ImageNumber == 1 || Model.ImageNumber == 2 || Model.ImageNumber == 3 || Model.ImageNumber == 4 || Model.ImageNumber == 6 || Model.ImageNumber == 7 || Model.ImageNumber == 8)
+                                {
+                                    <div class="col-md-3">
+                                        <label>Image Title-2</label>
+                                        @Html.TextBoxFor(m => m.ImageTitle2, null, new { @placeholder = "Enter Image Title2", @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.ImageTitle2, null, new { @class = "text-danger" })
+                                    </div>
+                                }
+                                @if (Model.ImageNumber == 2 || Model.ImageNumber == 3 || Model.ImageNumber == 6 || Model.ImageNumber == 7 || Model.ImageNumber == 8)
+                                {
+                                    <div class="col-md-3">
+                                        <label>Image Description</label>
+                                        @Html.TextBoxFor(m => m.ImageDescription, null, new { @placeholder = "Enter Image Description", @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.ImageDescription, null, new { @class = "text-danger" })
+                                    </div>
+                                }
+                                @if (Model.ImageNumber == 1)
+                                {
+                                    <div class="col-md-3">
+                                        <label>Old Cost</label>
+                                        @Html.TextBoxFor(m => m.OldCost, null, new { @placeholder = "Enter Old Cost", @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.OldCost, null, new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>New Cost</label>
+                                        @Html.TextBoxFor(m => m.NewCost, null, new { @placeholder = "Enter New Cost", @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.NewCost, null, new { @class = "text-danger" })
+                                    </div>
+                                }
+                                @*@if (Model.ImageNumber == 3)
+                                {
+                                    <div class="col-md-3">
+                                        <label>Sub Cost</label>
+                                        @Html.TextBoxFor(m => m.OldCost, null, new { @placeholder = "Enter Old Cost", @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.OldCost, null, new { @class = "text-danger" })
+                                    </div>
+                                }*@
+                                @if (Model.ImageNumber == 2 || Model.ImageNumber == 3 || Model.ImageNumber == 4 || Model.ImageNumber == 8 || Model.ImageNumber == 9)
+                                {
+                                    <div class="col-md-3">
+                                        @if (Model.ImageNumber == 3 || Model.ImageNumber == 4 || Model.ImageNumber == 9)
+                                        {
+                                            <label>Staring At</label>
+                                        }
+                                        else
+                                        {
+                                            <label>Up To</label>
+                                        }
+                                        @Html.TextBoxFor(m => m.StartingAt, null, new { @placeholder = "Enter Starting At", @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.StartingAt, null, new { @class = "text-danger" })
+                                    </div>
+                                }
+                                @if (Model.ImageNumber == 1 || Model.ImageNumber == 5)
+                                {
+                                    <div class="col-md-3">
+                                        <label>Discount Percentage</label>
+                                        @Html.TextBoxFor(m => m.DiscountPercent, null, new { @placeholder = "Enter Discounrt Percentage", @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.DiscountPercent, null, new { @class = "text-danger" })
+                                    </div>
+                                }
+                                    @if (Model.ImageNumber != 1)
+                                    {
+                                        <div class="col-md-3">
+                                            <label>Text On Button</label>
+                                            @Html.TextBoxFor(m => m.TextOnButton, null, new { @placeholder = "Enter Text On Button", @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.TextOnButton, null, new { @class = "text-danger" })
+                                        </div>
+                                    }
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Image Upload</label>
+                                            <input type="file" name="CategoryImageUpload" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="submit" class="btn btn-success serchgaptop"> Save</button>
+                                    </div>
+                                </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content -->
+</div>

@@ -1,0 +1,120 @@
+﻿@model IEnumerable<PoojaStores.Models.Repositories.Entity.CategoryMaster>
+
+@{ 
+    int rCnt = 1;
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-book"></i>
+        </div>
+        <div class="header-title">
+            <h1>All Categories</h1>
+            <small>Master Data management.</small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card" data-sortable="true">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="card-title custom_title">
+                                    <h4>Category List</h4>
+                                </div>
+                            </div>
+                           
+                            <div class="col-md-3">
+                                <div class="btn-group float-right" role="group">
+                                    <div class="buttonexport" id="buttonlist">
+                                        <a class="btn btn-add" href="~/Master/CategoryData">
+                                            <i class="fa fa-plus"></i> Add New
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="no-more-tables">
+                            <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                                <thead class="cf">
+                                    <tr>
+                                        <th>S.no</th>
+                                        <th>Category Name</th>
+                                        <th>Category Image</th>
+                                        <th>Sequence Number</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var u in Model)
+                                    {
+                                    <tr>
+                                        <td data-title="S.no">@(rCnt++)</td>
+                                        <td data-title="Category Name">@u.CategoryName</td>
+                                        <td>
+                                           <img src="~/ProductImages/@u.CategoryImage" width="150">
+                                        </td>
+                                        <td>@u.SequenceNumber</td>
+                                        <td data-title="Edit"><a href="~/Master/CategoryData?id=@u.CategoryId" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a></td>
+                                        <td data-title="Edit">
+                                            <a href="javascript:void(0)" onclick="ShowDelete(@u.CategoryId)">
+                                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </section>
+    <!-- /.content -->
+</div>
+
+<script>
+    function ShowDelete(id) {
+        swal("Are you sure?", {
+            buttons: {
+                yes: {
+                    text: "Yes",
+                    value: "yes"
+                },
+                no: {
+                    text: "No",
+                    value: "no"
+                }
+            }
+        }).then((value) => {
+            if (value === "yes") {
+                $.ajax({
+                    url: GlobalUrl + "Master/DeleteCategory?id=" + id,
+                    type: 'post',
+                    data: '{}',
+                    success: function (result) {
+                        toastr["success"]("Successuflly deleted!");
+                        window.location.href = window.location.href;
+                    }
+                });
+            }
+            else {
+                toastr["error"]("Delete cancelled!")
+            }
+            return false;
+        });
+
+
+    }
+</script>

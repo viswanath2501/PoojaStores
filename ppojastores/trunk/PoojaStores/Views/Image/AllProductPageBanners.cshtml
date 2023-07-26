@@ -1,0 +1,122 @@
+﻿@model IEnumerable<PoojaStores.Models.ModelClasses.ImageDisplayModel>
+
+@{
+    int rCnt = 1;
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-image"></i>
+        </div>
+        <div class="header-title">
+            <h1>All Home Page Category Images</h1>
+            <small></small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card" data-sortable="true">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="card-title custom_title">
+                                    <div class="row">
+                                        <h4 class="col-md-8">Category Images List</h4>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="btn-group float-right" role="group">
+                                    <div class="buttonexport" id="buttonlist">
+                                        <a class="btn btn-add" href="~/Image/ProductPageBannerData">
+                                            <i class="fa fa-plus"></i> Add New
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="no-more-tables">
+                            <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                                <thead class="cf">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Image</th>
+                                        <th>Category Name</th>
+                                        <th>Image Size</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var u in Model)
+                                    {
+                                        <tr>
+                                            <td data-title="Item Name">@(rCnt++)</td>
+                                            <td data-title="Item Name"><img src="~/ProductImages/@u.Image" width="300" height="100" /></td>
+                                            <td data-title="Item Name">@u.CategoryName</td>
+                                            <td data-title="Item Name">@u.ImageSize</td>
+                                            <td data-title="Edit"><a href="~/Image/ProductPageBannerData?id=@u.ImageId" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a></td>
+                                            <td data-title="Delete">
+                                                <a href="javascript:void(0)" onclick="ShowDelete(@u.ImageId)">
+                                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        
+                                        
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
+
+<script>
+    function ShowDelete(id) {
+        swal("Are you sure?", {
+            buttons: {
+                yes: {
+                    text: "Yes",
+                    value: "yes"
+                },
+                no: {
+                    text: "No",
+                    value: "no"
+                }
+            }
+        }).then((value) => {
+            if (value === "yes") {
+                $.ajax({
+                    url: GlobalUrl + "Image/DeleteBanners?id=" + id,
+                    type: 'post',
+                    data: '{}',
+                    success: function (result) {
+                        toastr["success"]("Successuflly deleted!");
+                        window.location.href = window.location.href;
+                    }
+                });
+            }
+            else {
+                toastr["error"]("Delete cancelled!")
+            }
+            return false;
+        });
+
+
+    }
+</script>

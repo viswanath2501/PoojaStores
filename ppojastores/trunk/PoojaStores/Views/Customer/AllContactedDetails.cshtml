@@ -1,0 +1,91 @@
+﻿@model IEnumerable<PoojaStores.Models.Repositories.Entity.ContactUs>
+
+@{
+    int rCnt = 1;
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-book"></i>
+        </div>
+        <div class="header-title">
+            <h1>All Contacted Details</h1>
+            <small></small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card" data-sortable="true">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="card-title custom_title">
+                                    <h4>Contacted List</h4>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                @*<div class="btn-group float-right" role="group">
+                                    <div class="buttonexport" id="buttonlist">
+                                        <a class="btn btn-add" href="~/Master/AddressTypesData">
+                                            <i class="fa fa-plus"></i> Add New
+                                        </a>
+                                    </div>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="no-more-tables">
+                            <table class="col-md-12 table-bordered table-striped table-condensed cf" id="mydatatable">
+                                <thead class="cf">
+                                    <tr>
+                                        <th>S.no</th>
+                                        <th> Name</th>
+
+                                        <th>Email</th>
+                                        <th>createdOn</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var u in Model)
+                                    {
+                                        <tr>
+                                            <td data-title="S.no">@(rCnt++)</td>
+                                            <td data-title="Category Name">@u.Name</td>
+
+                                            <td data-title="Edit">@*<a href="~/Master/AddressTypesData?id=@u.Id" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>*@
+                                                @u.email
+                                            </td>
+                                            <td data-title="Edit">
+                                                @*<a href="javascript:void(0)" onclick="ShowDelete(@u.Id)">
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal">
+                <i class="fa fa-trash"></i>
+            </button>
+        </a>*@
+                                                @{
+                                                    DateTime co = Convert.ToDateTime(u.createdOn);
+                                                }
+                                                @co.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @u.message
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>

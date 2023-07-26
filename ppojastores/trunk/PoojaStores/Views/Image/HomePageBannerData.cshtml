@@ -1,0 +1,154 @@
+﻿@model PoojaStores.Models.ModelClasses.ImageDisplayModel
+@{
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-image"></i>
+        </div>
+        <div class="header-title">
+            <h1>Edit Home Page Banner Images</h1>
+            <small></small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <div class="content">
+        <div class="row">
+            <!-- Form controls -->
+            <div class="col-sm-12">
+                <div class="card all_btn_card" id="lobicard-custom-control1" data-sortable="true">
+                    <div class="card-header all_card_btn">
+                        <div class="row">
+                            <div class="card-title custom_title col-sm-3">
+                                <h5>Edit Banner Image</h5>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Image Size : @Model.ImageSize</label>
+                            </div>                           
+                            <div class="col-md-3">
+                                <div class="btn-group float-right" role="group">
+                                    <div class="buttonexport" id="buttonlist">
+                                        <a class="btn btn-add" href="~/Image/AllHomePageBanners">
+                                            <i class="fa fa-reply mr-2"></i>Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="~/Image/HomePageBannerData" method="post" enctype="multipart/form-data">
+                            @Html.HiddenFor(m => m.ImageId)
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Select Category</label>
+                                    @Html.DropDownListFor(a => a.RelatedCategoryId, new SelectList(Model.CategoryDrops, "CategoryId", "CategoryName", Model.RelatedCategoryId),"---Select Category----", new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Image Title-1</label>
+                                    @Html.TextBoxFor(m => m.ImageTitle1, null, new { @placeholder = "Enter Image Title1", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.ImageTitle1, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Image Title-2</label>
+                                    @Html.TextBoxFor(m => m.ImageTitle2, null, new { @placeholder = "Enter Image Title2", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.ImageTitle2, null, new { @class = "text-danger" })
+                                </div>
+                                @*<div class="col-md-3">
+            <label>Image Description</label>
+            @Html.TextBoxFor(m => m.ImageDescription, null, new { @placeholder = "Enter Image Description", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ImageDescription, null, new { @class = "text-danger" })
+        </div>*@
+                                @*@if (Model.ImageNumber == 1)
+        {*@
+
+                                @*<div class="col-md-3">
+            <label>New Cost</label>
+            @Html.TextBoxFor(m => m.NewCost, null, new { @placeholder = "Enter New Cost", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NewCost, null, new { @class = "text-danger" })
+        </div>*@
+                                @* } *@
+                                <div class="col-md-3">
+                                    <label>Starting At</label>
+                                    @Html.TextBoxFor(m => m.StartingAt, null, new { @placeholder = "Enter Starting At", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.StartingAt, null, new { @class = "text-danger" })
+                                </div>
+                                @*<div class="col-md-3">
+                                    <label>Sub Cost</label>
+                                    @Html.TextBoxFor(m => m.OldCost, null, new { @placeholder = "Enter Old Cost", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.OldCost, null, new { @class = "text-danger" })
+                                </div>*@
+                                <div class="col-md-3">
+                                    <label>Discount Percentage</label>
+                                    @Html.TextBoxFor(m => m.DiscountPercent, null, new { @placeholder = "Enter Discounrt Percentage", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.DiscountPercent, null, new { @class = "text-danger" })
+                                </div>
+                                @*@if (Model.ImageNumber != 1)
+        {*@
+                                <div class="col-md-3">
+                                    <label>Text On Button</label>
+                                    @Html.TextBoxFor(m => m.TextOnButton, null, new { @placeholder = "Enter Text On Button", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.TextOnButton, null, new { @class = "text-danger" })
+                                </div>
+                                @*}*@
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Image Upload</label>
+                                        <input type="file" name="CategoryImageUpload" id="banr" onchange="CheckSize()" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-success serchgaptop"> Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content -->
+</div>
+@*<script>
+    function CheckSize() {
+        var fileUpload  = $("#banr").val();
+
+        var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(.jpg|.png|.gif)$");
+        if (regex.test(fileUpload.value.toLowerCase())) {
+
+            //Check whether HTML5 is supported.
+            if (typeof (fileUpload.files) != "undefined") {
+                //Initiate the FileReader object.
+                var reader = new FileReader();
+                //Read the contents of Image File.
+                reader.readAsDataURL(fileUpload.files[0]);
+                reader.onload = function (e) {
+                    //Initiate the JavaScript Image object.
+                    var image = new Image();
+
+                    //Set the Base64 string return from FileReader as source.
+                    image.src = e.target.result;
+
+                    //Validate the File Height and Width.
+                    image.onload = function () {
+                        var height = this.height;
+                        var width = this.width;
+                        if (height > 200 || width > 200) {
+
+                            //show width and height to user
+                            document.getElementById("width").innerHTML = width;
+                            document.getElementById("height").innerHTML = height;
+                            alert("Height and Width must not exceed 200px.");
+                            return false;
+                        }
+                        alert("Uploaded image has valid Height and Width.");
+                        return true;
+                    };
+
+                }
+            }
+        }
+    }
+</script>*@

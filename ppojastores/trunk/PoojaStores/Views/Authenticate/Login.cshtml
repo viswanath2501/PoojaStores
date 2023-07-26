@@ -1,0 +1,82 @@
+﻿@model PoojaStores.Models.ModelClasses.LoginRequest
+
+<main class="main">
+    
+
+    <div class="container login-container mt-4">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="heading mb-1">
+                            <h4 class="title">Login</h4>
+                        </div>
+                        <form action="~/Authenticate/Login" method="post">                            
+                            <input type="text" hidden value="@ViewBag.url" name="url" />
+                            <label for="login-email">
+                                Mobile Number or Email Address
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" name="emailid" title="Enter email / mobile number" placeholder="example@gmail.com" required="" value="" class="form-input form-wide">
+                            @Html.ValidationMessageFor(a => a.emailid, null, new { @class = "text-danger" })
+
+
+
+                            <label for="login-password">
+                                Password
+                                <span class="required">*</span>
+                            </label>
+                            <input type="password" name="pword" class="form-wide form-input" title="Please enter your password" placeholder="******" required="" value="">
+                            @Html.ValidationMessageFor(a => a.pword, null, new { @class = "text-danger" })
+                            <div>
+                                <span class="text-danger">
+                                    @ViewBag.ErrorMessage
+                                </span>
+                            </div>
+                            <div class="form-footer">
+                                @*<div class="custom-control custom-checkbox mb-0">
+                                    <input type="checkbox" class="custom-control-input" id="lost-password">
+                                    <label class="custom-control-label mb-0" for="lost-password">
+                                        Remember
+                                        me
+                                    </label>
+                                </div>*@
+
+                                <a href="~/Authenticate/ForgetPassword" class="forget-password text-dark form-footer-right">
+                                    <b>
+                                        Forgot
+                                        Password?
+                                    </b>
+                                </a>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-dark btn-md w-100">
+                                        LOGIN
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="~/Authenticate/Register">
+                                        <button type="button" class="btn btn-dark btn-md w-100">
+                                            REGISTER
+                                        </button>
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                   
+                        <div class="col-md-6">
+                            <img src="~/ProductImages/login-logo-ganesha.jpg" width="100%" alt="login-logo">
+                        </div>
+                 
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+
+ </main>

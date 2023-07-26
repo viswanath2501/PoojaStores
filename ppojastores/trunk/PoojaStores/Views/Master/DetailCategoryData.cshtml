@@ -1,0 +1,101 @@
+﻿
+@model PoojaStores.Models.ModelClasses.DetailCategoryModel
+@{
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-book"></i>
+        </div>
+        <div class="header-title">
+            <h1>Add SubCategory</h1>
+            <small>Master Data management.</small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <div class="content">
+        <div class="row">
+            <!-- Form controls -->
+            <div class="col-sm-12">
+                <div class="card all_btn_card" id="lobicard-custom-control1" data-sortable="true">
+                    <div class="card-header all_card_btn">
+                        <div class="row">
+                            <div class="card-title custom_title col-sm-6">
+                                <h5>Add DetailCategory</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="btn-group float-right" role="group">
+                                    <div class="buttonexport" id="buttonlist">
+                                        <a class="btn btn-add" href="~/Master/DetailCategory">
+                                            <i class="fa fa-reply mr-2"></i>Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="~/Master/DetailCategoryData" method="post">
+                            @Html.HiddenFor(m => m.DetailCategoryId)
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Detail Category Name</label>
+                                        @Html.DropDownListFor(x => Model.CategoryId, new SelectList(Model.catDrops, "CategoryId", "CategoryName", Model.CategoryId), new { @id = "catDD", @class = "form-control", onChange = "GetSubCats()" })
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>SubCategory Name</label>
+                                        @Html.DropDownListFor(x => Model.SubCategoryId, new SelectList(Model.subCatDrops, "SubCategoryId", "SubCategoryName", Model.SubCategoryId), new { @id = "subcatDD", @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>DetailCategory Name</label>
+                                    @Html.TextBoxFor(m => m.DetailCategoryName, Model.DetailCategoryName, new { @placeholder = "Enter DetailCategory Name", @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.DetailCategoryName, null, new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-success serchgaptop"> Save</button>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content -->
+</div>
+
+<script>
+
+    function GetSubCats() {
+        var catId = $('#catDD option:selected').val();
+        $.ajax({
+            url: GlobalUrl + "Common/GetAllSubCats?catId=" + catId,
+            type: 'post',
+            data: '{}',
+            success: function (res) {
+                var r = res.result.length;
+                var row = '';
+
+                if (r > 0) {
+                    for (var i = 0; i < r; i++) {
+                        row = row + '<option value="' + res.result[i].subCategoryId + '">' + res.result[i].subCategoryName + '</option>';
+                    }
+                }
+                $('#subcatDD').html('');
+                $('#subcatDD').html(row);
+
+            }
+        });
+    }
+</script>

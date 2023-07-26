@@ -1,0 +1,909 @@
+﻿@{
+    System.Globalization.CultureInfo Indian = new System.Globalization.CultureInfo("hi-IN");
+}
+<main class="main">
+    <div class="page-header">
+        <div class="container d-flex flex-column align-items-center">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="~/Home/Index">Home</a></li>
+
+                        <li class="breadcrumb-item active" aria-current="page">
+                            My Account
+                        </li>
+                    </ol>
+                </div>
+            </nav>
+            <h1 id="mHead">Dashboard</h1>
+        </div>
+    </div>
+
+    <div class="container account-container custom-account-container">
+        <div class="row">
+            <div class="sidebar widget widget-dashboard mb-lg-0 mb-3 col-lg-3 order-0">
+                <h2 class="text-uppercase">My Account</h2>
+                <ul class="nav nav-tabs list flex-column mb-0" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="dashboard-tab" data-toggle="tab" href="#dashboard"
+                           role="tab" aria-controls="dashboard" aria-selected="true" onclick="ChangeHead('DASH BOARD')">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="order-tab" data-toggle="tab" href="#order" role="tab"
+                           aria-controls="order" aria-selected="true" onclick="ChangeHead('ORDERS')">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab"
+                           aria-controls="address" aria-selected="false" onclick="ChangeHead('ADDRESS')">Address</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="edit-tab" data-toggle="tab" href="#edit" role="tab"
+                           aria-controls="edit" aria-selected="false" onclick="ChangeHead('ACCOUNT DETAILS')">
+                            Account
+                            details
+                        </a>
+                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link" id="shop-address-tab" data-toggle="tab" href="#shipping" role="tab"
+                               aria-controls="edit" aria-selected="false">Shopping Addres</a>
+                        </li>*@
+                    <li>
+                        <a class="nav-link" id="wishlist-tab" data-toggle="tab" href="#wishlist" role="tab"
+                           aria-controls="edit" aria-selected="false" onclick="ChangeHead('WISHLIST')">WishList</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" onclick="Logout()">Logout</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-9 order-lg-last order-1 tab-content">
+
+                <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                    <div class="dashboard-content">
+                        @*<p>
+                                Hello <strong class="text-dark">Editor</strong> (not
+                                <strong class="text-dark">Editor</strong>?
+                                <a href="~/Authenticate/Logout" class="btn btn-link ">Log out</a>)
+                            </p>
+
+                            <p>
+                                From your account dashboard you can view your
+                                <a class="btn btn-link link-to-tab" href="#order">recent orders</a>,
+                                manage your
+                                <a class="btn btn-link link-to-tab" href="#address">
+                                    shipping and billing
+                                    addresses
+                                </a>, and
+                                <a class="btn btn-link link-to-tab" href="#edit">
+                                    edit your password and account
+                                    details.
+                                </a>
+                            </p>*@<br />@{
+                            var p = ViewBag.profile;
+                            }
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="user">
+                                        <img src="~/ProductImages//@ViewBag.profile.ProfileImage" alt="client">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="user-details">
+                                        <h6>Name:&nbsp;<span>@p.FirstName</span></h6>
+                                        <h6>Email Id:&nbsp;<span>@p.EmailId</span></h6>
+                                        <h6>Phone Number:&nbsp;<span>@p.MobileNumber</span></h6>
+                                        @*<h6>UserName:&nbsp;<span>Alexander</span></h6>*@
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="mb-4"></div>
+
+                            <div class="row row-lg">
+                                <div class="col-6 col-md-4">
+                                    <div class="feature-box text-center pb-4">
+                                        <a href="#order" class="link-to-tab" onclick="ChangeHead('ORDERS')">
+                                            <i class="fab fa-first-order"></i>
+                                        </a>
+                                        <div class="feature-box-content">
+                                            <h3>ORDERS</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4">
+                                    <div class="feature-box text-center pb-4">
+                                        <a href="#address" class="link-to-tab" onclick="ChangeHead('ADDRESS')">
+                                            <i class="far fa-address-card"></i>
+                                        </a>
+                                        <div class="feature-box-content">
+                                            <h3>ADDRESS</h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-4">
+                                    <div class="feature-box text-center pb-4">
+                                        <a href="#edit" class="link-to-tab" onclick="ChangeHead('ACCOUNT DETAILS')"><i class="icon-user-2"></i></a>
+                                        <div class="feature-box-content p-0">
+                                            <h3>ACCOUNT DETAILS</h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-4">
+                                    <div class="feature-box text-center pb-4">
+                                        <a href="#wishlist" class="link-to-tab" onclick="ChangeHead('WISHLIST')"><i class="fas fa-heart"></i></a>
+                                        <div class="feature-box-content">
+                                            <h3>WISHLIST</h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-4">
+                                    <div class="feature-box text-center pb-4">
+                                        <a href="javascript:void(0)" class="link-to-tab" onclick="Logout()"><i class="fas fa-sign-out-alt"></i></a>
+                                        <div class="feature-box-content">
+                                            <h3>LOGOUT</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- End .row -->
+                        </div>
+                    </div><!-- End .tab-pane -->
+
+                    <div class="tab-pane fade" id="order" role="tabpanel">
+                        <div class="order-content">
+                            <h3 class="account-sub-title d-none d-md-block">
+                                <i class="sicon-social-dropbox align-middle mr-3"></i>Orders
+                            </h3>
+
+                            <div class="order-table-container text-center">
+                                <table class="table table-order text-left">
+                                    <thead>
+
+                                        <tr>
+                                            <th class="order-id">ORDER</th>
+                                            <th class="order-id">Product</th>
+                                            <th class="order-date">DATE</th>
+                                            <th class="order-status">STATUS</th>
+                                            <th class="order-price">TOTAL</th>
+                                            <th class="order-price">Other Options</th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var o in ViewBag.orders)
+                                    {
+                                        <tr class="product-row">
+                                            <td>
+                                                @*<figure class="product-image-container">
+                                                        <a href="#" class="product-image">
+                                                            <img src="~/Product" alt="product">
+                                                        </a>
+                                                    </figure>*@
+                                                <a href="~/Home/OrderDtails?id=@o.PODetailId" target="_blank">@o.OrderId</a>
+                                            </td>
+                                            <td class="product-row"><a href="~/Home/ProductDetails?id=@o.ProductId"><img src="~/ProductImages//@o.Image" height="50" width="50" /></a></td>
+                                            @{
+                                                DateTime dt = Convert.ToDateTime(o.AddedOn);
+                                                var ordertotal = o.TotalPrice;
+                                            }
+                                            <td>
+                                                @dt.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>@o.CurrentStatus</td>
+                                            <td>@(String.Format(Indian,"{0:N}",ordertotal))</td>
+                                            <td>
+                                                @if (o.CurrentStatus == "Ready To Dispatch")
+                                                {
+                                                    <a href="javascript:void(0)" onclick="CancelOrder(@o.PODetailId)" class="btn btn-danger">Cancel</a>
+                                                }
+                                                @{
+                                                    var curDt = DateTime.Now;
+                                                    //int tt=(((o.orderspan.Days * 24) * 3600) + (o.orderspan.Hours * 3600) + (o.orderspan.Minutes * 60) + (o.orderspan.Seconds));
+                                                 }
+                                                @if (o.CurrentStatus== "Delivered" && o.Discount==0 @*&& o.orderspan <= 16*@)
+                                                {
+                                                        <a href="javascript:void(0)" onclick="ReturnOrder(@o.PODetailId)" class="btn btn-danger">Return</a>
+                                                    }
+                                            </td>
+                                        </tr>
+                                    }
+
+                                    @*<tbody>
+                                            <tr>
+                                                <td class="text-center p-0" colspan="5">
+                                                    <p class="mb-5 mt-5">
+                                                        No Order has been made yet.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>*@
+                                </table>
+                                <hr class="mt-0 mb-3 pb-2" />
+
+                                <a href="~/Home/Index" class="btn btn-dark">Go Shop</a>
+                            </div>
+                        </div>
+                    </div><!-- End .tab-pane -->
+
+                    <div class="tab-pane fade" id="address" role="tabpanel">
+                        <h3 class="account-sub-title d-none d-md-block mb-1">
+                            <i class="sicon-location-pin align-middle mr-3"></i>Addresses
+                        </h3>
+                        <div class="addresses-content">
+                            <p class="mb-4">
+                                The following addresses will be used on the checkout page by
+                                default.
+                            </p>
+
+                            <div class="row">
+                                @*<div class="address col-md-6">*@
+                                @*<div class="heading d-flex">
+                                        <h4 class="text-dark mb-0">Billing address</h4>
+                                    </div>*@
+                                @if (ViewBag.address.Count > 0)
+                                {
+                                    @foreach (var a in ViewBag.address)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="addr-box">
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        <p>
+                                                            <h4>@a.FullName</h4>
+                                                            <h6>@a.AddressTypeName</h6>
+                                                            @a.LandMark, @a.Address1, @a.Address2<br />@a.LocationStreet, @a.CityName<br />@a.StateName, @a.CountryName<br />
+                                                            @a.ZipCode
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <br />
+                                                        <a href="#billing" class="btn btn-primary btn-sm address-action link-to-tab" onclick="EditAddress(@a.Id)"><i class="fa fa-edit"></i></a>
+                                                        <a href="javascript:void(0)" onclick="ShowDelete(@a.Id)">
+                                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="address-box">
+                                        You have not set up this type of address yet.
+                                    </div>
+                                }
+                            </div>
+                            <a href="#billing" class="btn btn-default address-action link-to-tab" onclick="AddClear()">
+                                Add
+                                Address
+                            </a>
+                            @*</div>*@
+
+                            @*<div class="address col-md-6 mt-5 mt-md-0">
+                                    <div class="heading d-flex">
+                                        <h4 class="text-dark mb-0">
+                                            Shipping address
+                                        </h4>
+                                    </div>
+                                    @if (ViewBag.address.Count > 0)
+                                    {
+                                        <div class="addr-box">
+                                            <p>
+                                                <h4>@ViewBag.shippingAddress.FullName</h4>
+                                                @ViewBag.shippingAddress.LandMark,@ViewBag.shippingAddress.Address1 , @ViewBag.shippingAddress.Address2<br />
+                                                @ViewBag.shippingAddress.LocationStreet, @ViewBag.shippingAddress.CityName<br />
+                                                @ViewBag.shippingAddress.StateName, @ViewBag.shippingAddress.CountryName<br />
+                                                @ViewBag.shippingAddress.ZipCode
+                                            </p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="address-box">
+                                            You have not set up this type of address yet.
+                                        </div>
+                                    }
+                                    <br />
+                                </div>*@
+
+                        </div>
+                    </div><!-- End .tab-pane -->
+
+                    <div class="tab-pane fade" id="edit" role="tabpanel">
+                        <h3 class="account-sub-title d-none d-md-block mt-0 pt-1 ml-1">
+                            <i class="icon-user-2 align-middle mr-3 pr-1"></i>Account Details
+                        </h3>
+                        @{
+                            var pf = ViewBag.profile;
+                            var pd = pf.PWord;
+                        }
+                        <div class="account-content">
+                            <form action="~/Home/SaveUser" method="post" enctype="multipart/form-data">
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="Editor"
+                                           name="UserId" value="@pf.UserId" hidden />
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="acc-name">First name <span class="required">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Editor"
+                                                   id="fname" name="FirstName" value="@pf.FirstName" required />
+                                        </div>
+                                    </div>
+
+                                    <input type="text" class="form-control" placeholder="Editor"
+                                           id="paswrd" name="PWord" value="" hidden />
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="acc-lastname">
+                                                Last name <span class="required">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" id="lname"
+                                                   name="LastName" value="@pf.LastName" required />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-2">
+                                            <label for="acc-text">Mobile Number <span class="required">*</span></label>
+                                            <input type="text" class="form-control" id="mobileno" name="MobileNumber"
+                                                   placeholder="Editor" value="@pf.MobileNumber" required />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Profile Image upload <span class="required">*</span></label>
+                                            <input type="file" class="form-control" name="ProfileImageUploaded" id="pimage" accept="image/*"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group mb-4">
+                                    <label for="acc-email">Email address <span class="required">*</span></label>
+                                    <input type="email" class="form-control" id="email" name="EmailId"
+                                           placeholder="editor@gmail.com" value="@pf.EmailId" required />
+                                </div>
+
+                                <div class="change-password">
+                                    <h3 class="text-uppercase mb-2">Password Change</h3>
+
+                                    <div class="form-group">
+                                        <label for="acc-password">
+                                            Current Password (leave blank to leave
+                                            unchanged)
+                                        </label>
+                                        @Html.TextBox("Cnpswd", null, new { @placeholder = "Current Password", @class = "form-control", @id = "password", @type = "password" })
+                                        @*<input type="password" placeholder="Current Password" class="form-control" id="password" />*@
+                                        <p id="cmessage" class="text-danger"></p>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="acc-password">
+                                            New Password (leave blank to leave
+                                            unchanged)
+                                        </label>
+                                        @Html.TextBox("Cnpswd", null, new { @placeholder = "New Password", @class = "form-control", @id = "npassword", @type = "password" })
+                                        @*<input type="password" placeholder="New Password" class="form-control" id="npassword" />*@
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="acc-password">Confirm New Password</label>
+                                        @Html.TextBox("Cnpswd", null, new { @placeholder = "Confirm New Password", @class = "form-control", @id = "cpassword", @type = "password" })
+                                        @*<input type="password" placeholder="Confirm New Password" class = "form-control" id = "cpassword" />*@
+                                    </div>
+                                    <p id="nmessage" class="text-danger"></p>
+                                </div>
+
+                                <div class="form-footer mt-3 mb-0">
+                                    <button type="submit" class="btn btn-dark mr-0" onclick="javascript:return CheckPassword()">
+                                        Save changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- End .tab-pane -->
+
+                    <div class="tab-pane fade" id="billing" role="tabpanel">
+                        <div class="address account-content mt-0 pt-2">
+                            <h4 class="title">Billing address</h4>
+
+                            <form class="mb-2" action="#">
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <label>FullName <span class="required">*</span></label>
+                                        <input type="text" class="form-control" id="fullName" required value="@ViewBag.LoggedUser.userName" />
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Landmark <span class="required">*</span></label>
+                                        <input type="text" class="form-control" id="landmark" />
+                                        <p id="land" class="text-danger"></p>
+                                    </div>
+
+                                    <input type="text" class="form-control" id="addId" required value="" name="Id" hidden />
+
+                                    <div class="form-group col-md-12">
+                                        <label>Address1 <span class="required">*</span></label>
+                                        <input type="text" class="form-control"
+                                               placeholder="House number and street name" id="address1" required />
+                                        <p id="add1" class="text-danger"></p>
+                                        <label>Address2 </label>
+                                        <input type="text" class="form-control"
+                                               placeholder="Apartment, suite, unit, etc. (optional)" id="address2"/>
+                                    </div>
+                                    <div class=" col-md-12 form-group">
+                                        <label>Address Type <span class="required">*</span></label>
+                                        @Html.DropDownList("AddreId", new SelectList(ViewBag.AddressTypes, "Id", "AddressTypeName", "0"), new { @id = "addtypeId", @class = "form-control" })
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label>Street <span class="required">*</span></label>
+                                        <input type="text" class="form-control" id="street" required />
+                                        <p id="loc" class="text-danger"></p>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label>Country / Region <span class="required">*</span></label>
+                                        @Html.DropDownList("counId", new SelectList(ViewBag.countries, "CountryId", "CountryName", "0"), new { @id = "cntId", @class = "form-control", @onChange = "GetStates()" })
+                                    </div>
+                                    <div class="form-group col-md-12 ">
+                                        <label>State / Country <span class="required">*</span></label>
+                                        @Html.DropDownList("statId", new SelectList(ViewBag.states, "StateId", "StateName", "0"), new { @id = "stateId", @class = "form-control", @onChange = "GetCities()" })
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Town / City <span class="required">*</span></label>
+                                        @Html.DropDownList("citId", new SelectList(ViewBag.cities, "CityId", "CityName", "0"), new { @id = "cityId", @class = "form-control" })
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label>Postcode / ZIP <span class="required">*</span></label>
+                                        <input type="number" class="form-control" id="Postcode" required />
+                                        <p id="post" class="text-danger"></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-footer mb-0">
+                                    <div class="form-footer-right">
+                                        <button type="submit" class="btn btn-dark py-4" onclick="Address()">
+                                            Save Address
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- End .tab-pane -->
+
+                    <div class="tab-pane fade" id="wishlist" role="tabpanel">
+                        <div class="address account-content mt-0 pt-2">
+                            <h4 class="title mb-3">Wishlist</h4>
+
+                            <div class="order-table-container text-center">
+                                <table class="table table-order text-left">
+                                    <thead>
+                                        <tr>
+                                            <th class="order-id">PRODUCT</th>
+                                            <th class="order-date">PRICE</th>
+                                            <th class="order-status">STOCK STATUS</th>
+                                            <th class="order-price">TOTAL</th>
+                                            <th class="order-action">ACTIONS</th>
+                                            @*<th class="order-action">Remove</th>*@
+                                        </tr>
+                                    </thead>
+                                    @foreach (var w in ViewBag.wishlist)
+                                    {
+                                        <tr class="product-row">
+                                            <td>
+                                                <figure class="product-image-container">
+                                                    <a href="~/Home/ProductDetails?id=@w.ProductId" class="product-image">
+                                                        <img src="~/ProductImages/@w.ProductMainImage1" alt="product" width="100" height="100">
+                                                    </a>
+                                                </figure>
+                                            </td>
+                                            <td>
+                                                @w.SellingPrice
+                                            </td>
+                                            <td>
+                                                @if (w.QtyAvailable > 0)
+                                                {
+                                                    <p>In Stock</p>
+                                                }
+                                                else
+                                                {
+                                                    <p>Out of Stock</p>
+                                                }
+
+                                            </td>
+                                            <td>@w.SellingPrice</td>
+                                            <td class="action">
+                                                <button class="btn btn-dark btn-shop" onclick="Addcart(@w.ProductId)">
+                                                    ADD TO CART
+                                                </button>
+                                            @*</td>
+                                            <td>*@
+                                                <a href="javascript:void(0)" onclick="ShowDeleteWish(@w.CartId)" class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div><!-- End .row -->
+                    </div><!-- End .container -->
+                    <div class="mb-5"></div><!-- margin -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+<script>
+    var EdditAddrId = 0;
+    function GetStates() {
+        var cotid = $('#cntId option:selected').val();
+        $.ajax({
+            url: GlobalUrl + "Common/GetAllStates?countryId=" + cotid,
+            type: 'post',
+            data: '{}',
+            success: function (res) {
+                var r = res.result.length;
+                var row = '';
+
+                if (r > 0) {
+                    for (var i = 0; i < r; i++) {
+                        row = row + '<option value="' + res.result[i].stateId + '">' + res.result[i].stateName + '</option>';
+                    }
+                }
+                $('#stateId').html('');
+                $('#stateId').html(row);
+            }
+        });
+    }
+    function GetCities() {
+        var sid = $('#stateId option:selected').val();
+        $.ajax({
+            url: GlobalUrl + "Common/GetAllCities?stateId=" + sid,
+            type: 'post',
+            data: '{}',
+            success: function (res) {
+                var r = res.result.length;
+                var row = '';
+
+                if (r > 0) {
+                    for (var i = 0; i < r; i++) {
+                        row = row + '<option value="' + res.result[i].cityId + '">' + res.result[i].cityName + '</option>';
+                    }
+                }
+                $('#cityId').html('');
+                $('#cityId').html(row);
+            }
+        });
+    }
+    function GetCitie(sd, cd) {        
+        $.ajax({
+            url: GlobalUrl + "Common/GetAllCities?stateId=" + sd,
+            type: 'post',
+            data: '{}',
+            success: function (res) {
+                var r = res.result.length;
+                var row = '';
+
+                if (r > 0) {
+                    for (var i = 0; i < r; i++) {
+                        if (res.result[i].cityId == cd) {
+                            row = row + '<option value="' + res.result[i].cityId + '" selected>' + res.result[i].cityName + '</option>';
+                        } else {
+                            row = row + '<option value="' + res.result[i].cityId + '">' + res.result[i].cityName + '</option>';
+                        }
+                    }
+                }
+                $('#cityId').html('');
+                $('#cityId').html(row);
+            }
+        });
+    }
+    function Address() {
+        //var lm = $('#landmark').val();
+        var loc = $("#Postcode").val();
+        if ($('#landmark').val() == "" || $('#street').val() == "" || $('#address1').val() == "" || $('#Postcode').val() === "") {
+            if ($('#landmark').val() == "") {
+                $('#land').text("Landmark is Required");
+            }if ($('#street').val() == "") {
+                $('#loc').text("Street Name is Required")
+            }
+            if ($('#address1').val() == "") {
+                $('#add1').text("Address is Required");
+            }
+            if ($('#Postcode').val() === "") {
+                $('#post').text("Postcode is Required");
+            }
+        }
+        else {
+            $.ajax({
+                url: GlobalUrl + "Sales/SaveAddress",
+                type: 'post',
+                data: {
+                    'AddressTypeId': $('select#addtypeId option:selected').val(),
+                    'LandMark': $('#landmark').val(),
+                    'LocationStreet': $('#street').val(),
+                    'CountryId': $('#cntId').val(),
+                    'stateId': $('#stateId').val(),
+                    'cityId': $('#cityId').val(),
+                    'address1': $('#address1').val(),
+                    'address2': $('#address2').val(),
+                    'ZipCode': $('#Postcode').val(),
+                    'FullName': $("#fullName").val(),
+                    'Id': EdditAddrId,
+                },
+                success: function (result) {
+                    if (result.result.statusCode == 1) {
+                        $('#address-tab').addClass('active');
+                        $('#dashboard-tab').removeClass('active');
+                        window.location.href = window.location.href;
+                    }
+                }
+            });
+             }
+    }
+    function ChangeHead(hName) {
+        $("#mHead").text(hName);
+    }
+
+    function ShowDelete(id) {
+            swal("Are you sure?", {
+                buttons: {
+                    yes: {
+                        text: "Yes",
+                        value: "yes"
+                    },
+                    no: {
+                        text: "No",
+                        value: "no"
+                    }
+                }
+            }).then((value) => {
+                if (value === "yes") {
+                    $.ajax({
+                        url: GlobalUrl + "Sales/DeleteAddress?id=" + id,
+                        type: 'post',
+                        data: '{}',
+                        success: function (result) {
+                            toastr["success"]("Successuflly deleted!");
+                            window.location.href = window.location.href;
+                        }
+                    });
+                }
+                else {
+                    toastr["error"]("Delete cancelled!")
+                }
+                return false;
+            });
+    }
+
+    function EditAddress(id) {
+
+        //if ($('#landmark').val() == "") {
+        //    $('#land').text("Landmark is Required");
+        //} else if ($('#street').val() == "") {
+        //    $('#loc').text("Location is Required")
+        //}
+        //else if ($('#address1').val() == "") {
+        //    $('#add1').text("Address1 is Reuired");
+        //}
+        //else if ($('#Postcode').val() === "") {
+        //    $('#post').text("Postcode is Required");
+        //}
+        //else {
+            $.ajax({
+                url: GlobalUrl + "Sales/GetAddressById?id=" + id,
+                type: 'post',
+                data: '{}',
+
+                success: function (result) {
+                    if (result.result.id > 0) {
+
+                        $('#fullname').val(result.result.fullName);
+                        $('#landmark').val(result.result.landMark);
+                        $('#address1').val(result.result.address1);
+                        $('#address2').val(result.result.address2);
+                        $('#addtypeId').val(result.result.addressTypeId).change();
+                        $('#street').val(result.result.locationStreet);
+                        $('#cntId').val(result.result.countryId);
+                        $('#stateId').val(result.result.stateId);
+                        GetCitie(result.result.stateId, result.result.cityId);
+                        //$('#cityId').val(result.result.cityId);
+                        $('#Postcode').val(result.result.zipCode);
+                        $("#addId").val(result.result.id);
+                        EdditAddrId = result.result.id;
+                    }
+                }
+            });
+        /*}*/
+    }
+
+    function CheckPassword() {
+        var ps = $('#password').val();
+        if (ps == "") {
+            return true;
+        }
+        else {
+            if (ps =='@pd') {
+                var nps = $('#npassword').val();
+                var cps = $('#cpassword').val();
+                if (nps == cps && (nps!="" || cps!="")) {
+                    $('#paswrd').val(nps);
+                    return true;
+                } else if (ps == cps) {
+                    $('#nmessage').text("Current Password and new password are equal");
+                    return false;
+                } else {
+                    $('#nmessage').text("Conform Password Doesn't Match");
+                    return false;
+                }
+            } else {
+                $('#cmessage').text("Current Password Incorrect");
+                $('#npassword').val("");
+                $('#cpassword').val("");
+                return false;
+            }
+        }
+    }
+    function AddClear() {
+        $('#fullname').val("")
+        $('#landmark').val("");
+        $('#address1').val("");
+        $('#address2').val("");
+        $('#addId').val("");
+        $('#street').val("");
+        $('#cntId').val(result.result.countryId);
+        $('#stateId').val(result.result.stateId);
+        GetCities();
+        $('#cityId').val(result.result.cityId);
+        $('#Postcode').val("");
+        $("#addId").val(result.result.id);
+    }
+
+    function Logout() {
+        swal("Are you sure?", {
+            buttons: {
+                yes: {
+                    text: 'yes',
+                    value:'yes',
+                },
+                no: {
+                    text: 'no',
+                    value:'no',
+                }
+            }
+        }).then((value) => {
+            if (value === 'yes') {
+                $.ajax({
+                    url: GlobalUrl + 'Authenticate/Logout',
+                    type: 'post',
+                    data: '{}',
+                    success: function (result) {
+                        window.location.href = "Index";
+                    }
+                })
+            }
+            else {
+                toastr["error"]("Logout cancelled!")
+            }
+        });
+    }
+    function CancelOrder(id) {
+        swal("Are you sure to cancel?", {
+            buttons: {
+                yes: {
+                    text: 'yes',
+                    value: 'yes',
+                },
+                no: {
+                    text: 'no',
+                    value: 'no',
+                }
+            }
+        }).then((value) => {
+            if (value === 'yes') {
+                $.ajax({
+                    url: GlobalUrl + 'Home/CancelOrder?id=' + id,
+                    type: 'post',
+                    data: '{}',
+                    success: function (result) {
+                        window.location.href = window.location.href;
+                    }
+                })
+            }
+            else {
+                toastr["error"]("Cancel Rejected!")
+            }
+        });
+    }
+    function ReturnOrder(id) {
+        swal("Are you sure to Return?", {
+            buttons: {
+                yes: {
+                    text: 'yes',
+                    value: 'yes',
+                },
+                no: {
+                    text: 'no',
+                    value: 'no',
+                }
+            }
+        }).then((value) => {
+            if (value === 'yes') {
+                $.ajax({
+                    url: GlobalUrl + 'Home/ReturnOrder?id=' + id,
+                    type: 'post',
+                    data: '{}',
+                    success: function (result) {
+                        window.location.href = window.location.href;
+                    }
+                })
+            }
+            else {
+                toastr["error"]("Return Cancled!")
+            }
+        });
+    }
+    function Addcart(id) {
+        $.ajax({
+            url: GlobalUrl + "Sales/SaveCart?id=" + id,
+            type: 'post',
+            data: '{}',
+            success: function (result) {
+                if (result.result.statusCode == 1) {
+                    window.location.href = window.location.href
+                    
+                } else {
+                    toastr['error'](result.result.statusMessage);
+                }
+            }
+
+        })
+    }
+    function ShowDeleteWish(id) {
+        swal("Are you sure?", {
+            buttons: {
+                yes: {
+                    val: 'yes',
+                    text: 'yes'
+                },
+                no: {
+                    val: 'no',
+                    text: 'no'
+                }
+
+            }
+        }).then((value) => {
+            if (value == 'yes') {
+                $.ajax({
+                    url: GlobalUrl + 'Sales/DeleteWishList?id=' + id,
+                    type: 'post',
+                    data: '{}',
+
+                    success: function (result) {
+                        if (result.result.statusCode == 1) {
+                            toastr['success']("Successfully Deleted!");
+                            window.location.href = window.location.href;
+                        }
+                    }
+                });
+            }
+            else {
+                toastr['error']("Delete Cancelled");
+            }
+
+        })
+
+    }
+    </script>

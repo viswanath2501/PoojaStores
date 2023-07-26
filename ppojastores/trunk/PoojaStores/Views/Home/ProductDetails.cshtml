@@ -1,0 +1,738 @@
+﻿@model PoojaStores.Models.ModelClasses.ProductMasterModel
+@{
+    System.Globalization.CultureInfo Indian = new System.Globalization.CultureInfo("hi-IN");
+}
+<main class="main">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Home/Index"><i class="icon-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">@Model.ProductTitle</a></li>
+            </ol>
+        </nav>
+
+        <div class="product-single-container product-single-default">
+            <div class="cart-message d-none">
+                <strong class="single-cart-notice">“Men Black Sports Shoes”</strong>
+                <span>has been added to your cart.</span>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-5 col-md-6 product-single-gallery">
+                    <div class="product-slider-container">
+                        <div class="label-group">
+                            @if (Model.DiscountPercentage != 0)
+                            {
+                                <div class="product-label label-hot">HOT</div>
+
+                                <div class="product-label label-sale">
+                                    -@Model.DiscountPercentage %
+                                </div>
+                            }
+                        </div>
+                        <div class="product-single-carousel owl-carousel owl-theme show-nav-hover">
+                            <div class="product-item">
+                                <img class="product-single-image" src="~/ProductImages/@Model.ProductMainImage1" data-zoom-image="../ProductImages/@Model.ProductMainImage1" width="468" height="468" alt="product" />
+                            </div>
+                            @if (Model.ProductMainImage2 != null)
+                            {
+                                <div class="product-item">
+                                    <img class="product-single-image" src="~/ProductImages/@Model.ProductMainImage2" data-zoom-image="../ProductImages/@Model.ProductMainImage2" width="468" height="468" alt="product" />
+                                </div>
+                            }
+                            @foreach (var o in Model.OtherImages)
+                            {
+                                <div class="product-item">
+                                    <img class="product-single-image" src="~/ProductImages/@o" data-zoom-image="../ProductImages/@o" width="468" height="468" alt="product" />
+                                </div>
+                            }
+                        </div>
+                        <!-- End .product-single-carousel -->
+                        <span class="prod-full-screen">
+                            <i class="icon-plus"></i>
+                        </span>
+                    </div>
+
+                    <div class="prod-thumbnail owl-dots">
+                        <div class="owl-dot">
+                            <img src="~/ProductImages/@Model.ProductMainImage1" alt="product-thumbnail" />
+                        </div>
+                        <div class="owl-dot">
+                            <img src="~/ProductImages/@Model.ProductMainImage2" alt="product-thumbnail" />
+                        </div>
+                        @foreach (var o in Model.OtherImages)
+                        {
+                            <div class="owl-dot">
+                                <img src="~/ProductImages/@o" alt="product-thumbnail" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- End .product-single-gallery -->
+
+                <div class="col-lg-7 col-md-6 product-single-details">
+                    <h1 class="product-title">@Model.ProductTitle</h1>
+                    <!--<div class="ratings-container">
+                        <div class="product-ratings">
+                            <span class="ratings" style="width:60%"></span>-->
+                    <!-- End .ratings -->
+                    <!--<span class="tooltiptext tooltip-top"></span>
+                    </div>-->
+                    <!-- End .product-ratings -->
+                    <!--<a href="#" class="rating-link">( 6 Reviews )</a>
+                    </div>-->
+                    <!-- End .ratings-container -->
+
+                    <hr class="short-divider">
+
+                    <div class="price-box">
+                        @if (Model.DiscountPercentage != 0)
+                        {
+                            <span class="old-price">Rs. @(String.Format(Indian,"{0:N}",Model.SellingPrice))</span>
+                        }
+                        <span class="new-price">Rs.  @(String.Format(Indian,"{0:N}",Model.DiscountedCost))</span>
+                    </div>
+                    <!-- End .price-box -->
+
+                    <div class="product-desc">
+                        <p>
+                            @Model.ProductDescription
+                        </p>
+                    </div>
+                    <!-- End .product-desc -->
+
+                    <ul class="single-info-list">
+
+                        <li>
+                            SQUId: <strong>@Model.SQUID</strong>
+                        </li>
+
+                        <li>
+                            CATEGORY: <strong><a href="~/Home/ProductsList?catDetail=@Model.CategoryId,0" class="product-category">@Model.CategoryName</a></strong>
+                        </li>
+                        <li>
+                            Quantity Available : <strong>@Model.QtyAvailable</strong>
+                        </li>
+                        <li>
+                            Minimum Order Quantity : <strong>@Model.MinimumOrderQty</strong>
+                        </li>
+
+                        @*<li>
+                                TAGs: <strong><a href="#" class="product-category">POOJA</a></strong>,
+                                <strong><a href="#" class="product-category">VRATHAM</a></strong>
+                            </li>*@
+                    </ul>
+
+                    <div class="product-action">
+                        <div class="product-single-qty" id="alter">
+                            <input class="horizontal-quantity form-control" type="text" id="prodQuantity" value="@Model.MinimumOrderQty">
+                        </div>
+                        <!-- End .product-single-qty -->
+
+                        <a href="javascript:;" class="btn btn-dark " title="Add to Cart" id="carts" onclick="cart(@Model.ProductId)">Add to Cart</a>
+
+                        <a href="~/Sales/Cart" class="btn btn-gray" id="view">View cart</a>
+                    </div>
+                    <!-- End .product-action -->
+
+                    <hr class="divider mb-0 mt-0">
+
+                    <div class="product-single-share mb-3">
+                        <label class="sr-only">Share:</label>
+
+                        @*<div class="social-icons mr-2">
+                                <a href="#" class="social-icon social-facebook icon-facebook" target="_blank" title="Facebook"></a>
+                                <a href="#" class="social-icon social-twitter icon-twitter" target="_blank" title="Twitter"></a>
+                                <a href="#" class="social-icon social-linkedin fab fa-linkedin-in" target="_blank" title="Linkedin"></a>
+                                <a href="#" class="social-icon social-gplus fab fa-google-plus-g" target="_blank" title="Google +"></a>
+                                <a href="#" class="social-icon social-mail icon-mail-alt" target="_blank" title="Mail"></a>
+                            </div>*@
+                        <!-- End .social-icons -->
+                        @if (ViewBag.test == true)
+                        {
+                            <a href="~/Sales/WishList" title="Add to Wishlist">
+                                @*❤️*@ <div class="d-xl-heart"><img src="~/assets/images/heart.png" /><span>&nbsp; BROWSE   WISHLIST</span></div>
+
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#" title="Add to Wishlist" onclick="WishList(@Model.ProductId)">
+                                <i class="icon-wishlist-2"></i><span id="sale">ADD TO WISHLIST</span>
+                            </a>
+                        }
+                    </div>
+                    <!-- End .product single-share -->
+                </div>
+                <!-- End .product-single-details -->
+            </div>
+            <!-- End .row -->
+        </div>
+        <!-- End .product-single-container -->
+        <!--<div class="product-single-tabs">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="product-tab-desc" data-toggle="tab" href="#product-desc-content" role="tab" aria-controls="product-desc-content" aria-selected="true">Description</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="product-tab-size" data-toggle="tab" href="#product-size-content" role="tab" aria-controls="product-size-content" aria-selected="true">Size Guide</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="product-tab-tags" data-toggle="tab" href="#product-tags-content" role="tab" aria-controls="product-tags-content" aria-selected="false">
+                        Additional
+                        Information
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="product-tab-reviews" data-toggle="tab" href="#product-reviews-content" role="tab" aria-controls="product-reviews-content" aria-selected="false">Reviews (1)</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="product-desc-content" role="tabpanel" aria-labelledby="product-tab-desc">
+                    <div class="product-desc-content">
+                        <p>
+                                @Model.ProductDescription
+                        </p>
+                        <ul>
+                            <li>
+                                Any Product types that You want - Simple, Configurable
+                            </li>
+                            <li>
+                                Downloadable/Digital Products, Virtual Products
+                            </li>
+                            <li>
+                                Inventory Management with Backordered items
+                            </li>
+                        </ul>
+                        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                    </div>-->
+        <!-- End .product-desc-content -->
+        <!--</div>-->
+        <!-- End .tab-pane -->
+        <!--<div class="tab-pane fade" id="product-size-content" role="tabpanel" aria-labelledby="product-tab-size">
+            <div class="product-size-content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="~/assets/images/products/zoom/product-1-big.jpg" alt="body shape" width="617" height="298">
+                    </div>-->
+        <!-- End .col-md-4 -->
+        <!--<div class="col-md-8">
+                <table class="table table-size">
+                    <thead>
+                        <tr>
+                            <th>SIZE</th>
+                            <th>COLOR</th>
+                            <th>TYPE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>S</td>
+                            <td>SILVER</td>
+                            <td>WATER</td>
+                        </tr>
+                        <tr>
+                            <td>M</td>
+                            <td>COPPER</td>
+                            <td>COINS</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>STEEL</td>
+                            <td>TURMERIC</td>
+                        </tr>
+                        <tr>
+                            <td>XL</td>
+                            <td>METAL</td>
+                            <td>RICE</td>
+                        </tr>
+                        <tr>
+                            <td>XXL</td>
+                            <td>GOLD</td>
+                            <td>BETEL NUTS</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>-->
+        <!-- End .row -->
+        <!--</div>-->
+        <!-- End .product-size-content -->
+        <!--</div>-->
+        <!-- End .tab-pane -->
+        <!--<div class="tab-pane fade" id="product-tags-content" role="tabpanel" aria-labelledby="product-tab-tags">
+            <table class="table table-striped mt-2">
+                <tbody>
+                    <tr>
+                        <th>Weight</th>
+                        <td>@Model.ActualWeight kg</td>
+                    </tr>
+
+                    <tr>
+                        <th>Dimensions</th>
+                        <td>@Model.PackHeight @Model.MeasurementName * @Model.PackWidth @Model.MeasurementName * @Model.PackLength @Model.MeasurementName</td>
+                    </tr>
+
+                    <tr>
+                        <th>Color</th>
+                        <td>Gold, Silver, Copper, Metal, Steel</td>
+                    </tr>
+
+                    <tr>
+                        <th>Size</th>
+                        <td>Double Extra Large, Extra Large, Large, Medium, Small</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>-->
+        <!-- End .tab-pane -->
+        <!--<div class="tab-pane fade" id="product-reviews-content" role="tabpanel" aria-labelledby="product-tab-reviews">
+            <div class="product-reviews-content">
+                <h3 class="reviews-title">1 review for Men Black Sports Shoes</h3>
+
+                <div class="comment-list">
+                    <div class="comments">
+                        <figure class="img-thumbnail">
+                            <img src="~/assets/images/blog/author.jpg" alt="author" width="80" height="80">
+                        </figure>
+
+                        <div class="comment-block">
+                            <div class="comment-header">
+                                <div class="comment-arrow"></div>
+
+                                <div class="ratings-container float-sm-right">
+                                    <div class="product-ratings">
+                                        <span class="ratings" style="width:60%"></span>-->
+        <!-- End .ratings -->
+        <!--<span class="tooltiptext tooltip-top"></span>
+        </div>-->
+        <!-- End .product-ratings -->
+        <!--</div>
+
+                        <span class="comment-by">
+                            <strong>Joe Doe</strong> – April 12, 2018
+                        </span>
+                    </div>
+
+                    <div class="comment-content">
+                        <p>Excellent.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="add-product-review">
+            <h3 class="review-title">Add a review</h3>
+
+            <form action="#" class="comment-form m-0">
+                <div class="rating-form">
+                    <label for="rating">Your rating <span class="required">*</span></label>
+                    <span class="rating-stars">
+                        <a class="star-1" href="#">1</a>
+                        <a class="star-2" href="#">2</a>
+                        <a class="star-3" href="#">3</a>
+                        <a class="star-4" href="#">4</a>
+                        <a class="star-5" href="#">5</a>
+                    </span>
+
+                    <select name="rating" id="rating" required="" style="display: none;">
+                        <option value="">Rate…</option>
+                        <option value="5">Perfect</option>
+                        <option value="4">Good</option>
+                        <option value="3">Average</option>
+                        <option value="2">Not that bad</option>
+                        <option value="1">Very poor</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Your review <span class="required">*</span></label>
+                    <textarea cols="5" rows="6" class="form-control form-control-sm"></textarea>
+                </div>-->
+        <!-- End .form-group -->
+        <!--<div class="row">
+            <div class="col-md-6 col-xl-12">
+                <div class="form-group">
+                    <label>Name <span class="required">*</span></label>
+                    <input type="text" class="form-control form-control-sm" required>
+                </div>-->
+        <!-- End .form-group -->
+        <!--</div>
+
+        <div class="col-md-6 col-xl-12">
+            <div class="form-group">
+                <label>Email <span class="required">*</span></label>
+                <input type="text" class="form-control form-control-sm" required>
+            </div>-->
+        <!-- End .form-group -->
+        <!--</div>
+
+                    <div class="col-md-12">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="save-name" />
+                            <label class="custom-control-label mb-0" for="save-name">
+                                Save my
+                                name, email, and website in this browser for the next time I
+                                comment.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
+        </div>-->
+        <!-- End .add-product-review -->
+        <!--</div>-->
+        <!-- End .product-reviews-content -->
+        <!--</div>-->
+        <!-- End .tab-pane -->
+        <!--</div>-->
+        <!-- End .tab-content -->
+        <!--</div>-->
+        <!-- End .product-single-tabs -->
+        <!--<div class="products-section pt-0">
+            <h2 class="section-title">Related Products</h2>
+
+            <div class="products-slider owl-carousel owl-theme dots-top dots-small">
+                <div class="product-default">
+                    <figure>
+                        <a href="product.html">
+                            <img src="~/assets/images/products/product-1.jpg" width="280" height="280" alt="product">
+                            <img src="~/assets/images/products/product-1-1.jpg" width="280" height="280" alt="product">
+                        </a>
+                        <div class="label-group">
+                            <div class="product-label label-hot">HOT</div>
+                            <div class="product-label label-sale">-20%</div>
+                        </div>
+                    </figure>
+                    <div class="product-details">
+                        <div class="category-list">
+                            <a href="category.html" class="product-category">Category</a>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="product.html">Ultimate 3D Bluetooth Speaker</a>
+                        </h3>
+                        <div class="ratings-container">
+                            <div class="product-ratings">
+                                <span class="ratings" style="width:80%"></span>-->
+        <!-- End .ratings -->
+        <!--<span class="tooltiptext tooltip-top"></span>
+        </div>-->
+        <!-- End .product-ratings -->
+        <!--</div>-->
+        <!-- End .product-container -->
+        <!--<div class="price-box">
+            <del class="old-price">$59.00</del>
+            <span class="product-price">$49.00</span>
+        </div>-->
+        <!-- End .price-box -->
+        <!--<div class="product-action">
+                <a href="wishlist.html" title="Wishlist" class="btn-icon-wish">
+                    <i class="icon-heart"></i>
+                </a>
+                <a href="product.html" class="btn-icon btn-add-cart">
+                    <i class="fa fa-arrow-right"></i><span>
+                        SELECT
+                        OPTIONS
+                    </span>
+                </a>
+                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>-->
+        <!-- End .product-details -->
+        <!--</div>
+
+        <div class="product-default">
+            <figure>
+                <a href="product.html">
+                    <img src="~/assets/images/products/product-3.jpg" width="280" height="280" alt="product">
+                    <img src="~/assets/images/products/product-3-1.jpg" width="280" height="280" alt="product">
+                </a>
+                <div class="label-group">
+                    <div class="product-label label-hot">HOT</div>
+                    <div class="product-label label-sale">-20%</div>
+                </div>
+            </figure>
+            <div class="product-details">
+                <div class="category-list">
+                    <a href="category.html" class="product-category">Category</a>
+                </div>
+                <h3 class="product-title">
+                    <a href="product.html">Circled Ultimate 3D Speaker</a>
+                </h3>
+                <div class="ratings-container">
+                    <div class="product-ratings">
+                        <span class="ratings" style="width:80%"></span>-->
+        <!-- End .ratings -->
+        <!--<span class="tooltiptext tooltip-top"></span>
+        </div>-->
+        <!-- End .product-ratings -->
+        <!--</div>-->
+        <!-- End .product-container -->
+        <!--<div class="price-box">
+            <del class="old-price">$59.00</del>
+            <span class="product-price">$49.00</span>
+        </div>-->
+        <!-- End .price-box -->
+        <!--<div class="product-action">
+                <a href="wishlist.html" title="Wishlist" class="btn-icon-wish">
+                    <i class="icon-heart"></i>
+                </a>
+                <a href="product.html" class="btn-icon btn-add-cart">
+                    <i class="fa fa-arrow-right"></i><span>
+                        SELECT
+                        OPTIONS
+                    </span>
+                </a>
+                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>-->
+        <!-- End .product-details -->
+        <!--</div>
+
+        <div class="product-default">
+            <figure>
+                <a href="product.html">
+                    <img src="~/assets/images/products/product-7.jpg" width="280" height="280" alt="product">
+                    <img src="~/assets/images/products/product-7-1.jpg" width="280" height="280" alt="product">
+                </a>
+                <div class="label-group">
+                    <div class="product-label label-hot">HOT</div>
+                    <div class="product-label label-sale">-20%</div>
+                </div>
+            </figure>
+            <div class="product-details">
+                <div class="category-list">
+                    <a href="category.html" class="product-category">Category</a>
+                </div>
+                <h3 class="product-title">
+                    <a href="product.html">Brown-Black Men Casual Glasses</a>
+                </h3>
+                <div class="ratings-container">
+                    <div class="product-ratings">
+                        <span class="ratings" style="width:80%"></span>-->
+        <!-- End .ratings -->
+        <!--<span class="tooltiptext tooltip-top"></span>
+        </div>-->
+        <!-- End .product-ratings -->
+        <!--</div>-->
+        <!-- End .product-container -->
+        <!--<div class="price-box">
+            <del class="old-price">$59.00</del>
+            <span class="product-price">$49.00</span>
+        </div>-->
+        <!-- End .price-box -->
+        <!--<div class="product-action">
+                <a href="wishlist.html" title="Wishlist" class="btn-icon-wish">
+                    <i class="icon-heart"></i>
+                </a>
+                <a href="product.html" class="btn-icon btn-add-cart">
+                    <i class="fa fa-arrow-right"></i><span>
+                        SELECT
+                        OPTIONS
+                    </span>
+                </a>
+                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>-->
+        <!-- End .product-details -->
+        <!--</div>
+
+        <div class="product-default">
+            <figure>
+                <a href="product.html">
+                    <img src="~/assets/images/products/product-6.jpg" width="280" height="280" alt="product">
+                    <img src="~/assets/images/products/product-6-1.jpg" width="280" height="280" alt="product">
+                </a>
+                <div class="label-group">
+                    <div class="product-label label-hot">HOT</div>
+                    <div class="product-label label-sale">-20%</div>
+                </div>
+            </figure>
+            <div class="product-details">
+                <div class="category-list">
+                    <a href="category.html" class="product-category">Category</a>
+                </div>
+                <h3 class="product-title">
+                    <a href="product.html">Men Black Gentle Belt</a>
+                </h3>
+                <div class="ratings-container">
+                    <div class="product-ratings">
+                        <span class="ratings" style="width:80%"></span>-->
+        <!-- End .ratings -->
+        <!--<span class="tooltiptext tooltip-top"></span>
+        </div>-->
+        <!-- End .product-ratings -->
+        <!--</div>-->
+        <!-- End .product-container -->
+        <!--<div class="price-box">
+            <del class="old-price">$59.00</del>
+            <span class="product-price">$49.00</span>
+        </div>-->
+        <!-- End .price-box -->
+        <!--<div class="product-action">
+                <a href="wishlist.html" title="Wishlist" class="btn-icon-wish">
+                    <i class="icon-heart"></i>
+                </a>
+                <a href="product.html" class="btn-icon btn-add-cart">
+                    <i class="fa fa-arrow-right"></i><span>
+                        SELECT
+                        OPTIONS
+                    </span>
+                </a>
+                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>-->
+        <!-- End .product-details -->
+        <!--</div>
+
+        <div class="product-default">
+            <figure>
+                <a href="product.html">
+                    <img src="~/assets/images/products/product-4.jpg" width="280" height="280" alt="product">
+                    <img src="~/assets/images/products/product-4-1.jpg" width="280" height="280" alt="product">
+                </a>
+                <div class="label-group">
+                    <div class="product-label label-hot">HOT</div>
+                    <div class="product-label label-sale">-20%</div>
+                </div>
+            </figure>
+            <div class="product-details">
+                <div class="category-list">
+                    <a href="category.html" class="product-category">Category</a>
+                </div>
+                <h3 class="product-title">
+                    <a href="product.html">Blue Backpack for the Young - S</a>
+                </h3>
+                <div class="ratings-container">
+                    <div class="product-ratings">
+                        <span class="ratings" style="width:80%"></span>-->
+        <!-- End .ratings -->
+        <!--<span class="tooltiptext tooltip-top"></span>
+        </div>-->
+        <!-- End .product-ratings -->
+        <!--</div>-->
+        <!-- End .product-container -->
+        <!--<div class="price-box">
+            <del class="old-price">$59.00</del>
+            <span class="product-price">$49.00</span>
+        </div>-->
+        <!-- End .price-box -->
+        <!--<div class="product-action">
+                <a href="wishlist.html" title="Wishlist" class="btn-icon-wish">
+                    <i class="icon-heart"></i>
+                </a>
+                <a href="product.html" class="btn-icon btn-add-cart">
+                    <i class="fa fa-arrow-right"></i><span>
+                        SELECT
+                        OPTIONS
+                    </span>
+                </a>
+                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>-->
+        <!-- End .product-details -->
+        <!--</div>
+        </div>-->
+        <!-- End .products-slider -->
+        <!--</div>-->
+        <!-- End .products-section -->
+
+        <hr class="mt-0 m-b-5" />
+
+        <!-- End .row -->
+    </div>
+    <!-- End .container -->
+</main>
+
+<script>
+    function WishList(id) {
+        var text = $("#sale").text();
+        if (text == "ADD TO WISHLIST") {
+            $.ajax({
+                url: GlobalUrl + "Sales/SaveWishList?id=" + id,
+                type: 'post',
+                data: '{}',
+                success: function (result) {
+                    if (result.result.statusCode == 1) {
+                        toastr["success"]("Successuflly Added!");
+                        window.location = "ProductDetails?id=" + id;
+                    }
+                    else if (result.result.statusCode == 5) {
+                        window.location = "GoToLogin";
+                        toastr["error"]("Added cancelled!")
+                    }
+                    else {
+                        toastr["error"](result.result.statusMessage)
+                    }
+                }
+            });
+        } else {
+            window.location = "GoToWishList";
+        }
+    }
+    function cart(id) {
+        var text = $("#carts").text();
+        if (text == "  Add to Cart") {
+            var cnt = $("#prodQuantity").val();
+            $.ajax({
+                url: GlobalUrl + "Sales/SaveCart",
+                type: 'post',
+                data: {
+                    'id': id,
+                    'qty': cnt,
+                },
+                success: function (result) {
+                    if (result.result.statusCode == 1) {
+                        toastr["success"]("Sucessfully Added!");
+                        //$("#carts").hide();
+                        //$("#alter").hide();
+                        //$("#view").show();
+                        window.location.href = window.location.href;
+                    }
+                    else if (result.result.statusCode == 5) {
+                        window.location = "GoToLogin";
+                    } else if (result.result.statusCode == 2) {
+                        toastr["error"]("Exceeding Available Quantity")
+                    }
+                    else {
+                        toastr["error"](result.result.statusMessage)
+                    }
+                }
+            });
+        }
+    }
+    function cartview() {
+        var Yes = "Yes";
+        var No = "No";
+        var text =@ViewBag.cart;
+        if (text == "Yes") {
+            $("#carts").html("<i class='fas fa-shopping-bag'></i>  Add to Cart");
+            $("#view").hide();
+        } else {
+            $("#alter").hide();
+            $("#carts").hide();
+        }
+    }
+    $(document).ready(function () {
+        cartview();
+    });
+</script>

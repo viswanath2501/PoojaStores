@@ -1,0 +1,661 @@
+﻿@{ 
+    System.Globalization.CultureInfo Indian = new System.Globalization.CultureInfo("hi-IN");
+}
+<main class="main home">
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-lg-3 mb-2 appear-animate" data-animation-name="fadeInRightShorter" data-animation-delay="200" data-animation-duration="1000">
+                <div class="side-menu-wrapper">
+                    <h2 class="side-menu-title ls-10">Top Categories</h2>
+
+                    <div class="side-menu-body mb-2 px-3 mx-3">
+                        <ul class="side-menu pb-1">
+                           @foreach (var c in ViewBag.HeadCats)
+                            {
+                                <li>
+                                    <a href="~/Home/ProductsList?catDetail=@c.CategoryId,0">
+                                        <img src="~/ProductImages/@c.CategoryImage" width="25px" height="25px" alt="pooja" class="mr-2">
+                                            @c.CategoryName
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        @*<a href="javascript:void(0)" class="btn btn-block btn-dark btn-lg px-0 ls-10">
+                            Huge Sale -
+                            <strong>70%</strong>
+                            Off
+                        </a>*@
+                    </div>
+                    <!-- End .side-menu-body -->
+                </div>
+                <!-- End .side-custom-menu -->
+            </div>
+            <!-- End .col-lg-3 -->
+
+            <div class="col-lg-9 mb-2 appear-animate" data-animation-name="fadeInLeftShorter" data-animation-delay="400" data-animation-duration="1000">
+                <div class="home-slider owl-carousel owl-theme" data-owl-options="{
+							'dots': true,
+							'nav': false
+						}">
+                    @foreach (var b in ViewBag.banners)
+                    {
+                    <div class="home-slide home-slide1 banner banner-md-vw banner-sm-vw d-flex align-items-center">
+                        <img class="slide-bg" style="background-color: #71b5da;" src="~/ProductImages/@b.Image" width="835" height="415" alt="slider image">
+                        <div class="banner-layer">
+                            <h4 class="text-white">@b.ImageTitle1</h4>
+                            <h2 class="text-white mb-0">@b.ImageTitle2</h2>
+                            <h3 class="text-white text-uppercase">@b.DiscountPercent% Off</h3>
+                            <h5 class="text-white text-uppercase d-inline-flex ls-n-20 mb-0">
+                                Starting&nbsp At <b class="coupon-sale-text text-secondary bg-white">
+                                ₹<em class="align-text-top">@b.StartingAt</em>
+                               </b>
+                            </h5>
+                            <div>
+                                <a href="~/Home/ProductsList?catDetail=@b.RelatedCategoryId,0" class="btn btn-danger btn-red">@b.TextOnButton</a>
+                            </div>
+                            
+                        </div>
+                        <!-- End .banner-layer -->
+                    </div>
+                    }
+                    <!-- End .home-slide -->
+
+                  
+                </div>
+                <!-- End .home-slider -->
+            </div>
+            <!-- End .col-lg-9 -->
+        </div>
+        <!-- End .row -->
+
+
+        <!--<div class="info-boxes-container row row-joined mb-1 appear-animate" data-animation-name="fadeInUpShorter" data-animation-duration="1000">
+            <div class="info-box info-box-icon-left col-lg-4">
+                <i class="icon-shipping"></i>
+
+                <div class="info-box-content">
+                    <h4>FREE SHIPPING &amp; RETURN</h4>
+                    <p class="text-body">Free shipping on all orders over $99.</p>
+                </div>-->
+                <!-- End .info-box-content -->
+            <!--</div>-->
+            <!-- End .info-box -->
+
+            <!--<div class="info-box info-box-icon-left col-lg-4">
+                <i class="icon-money"></i>
+
+                <div class="info-box-content">
+                    <h4>MONEY BACK GUARANTEE</h4>
+                    <p class="text-body">100% money back guarantee</p>
+                </div>-->
+                <!-- End .info-box-content -->
+            <!--</div>-->
+            <!-- End .info-box -->
+
+            <!--<div class="info-box info-box-icon-left col-lg-4">
+                <i class="icon-support"></i>
+
+                <div class="info-box-content">
+                    <h4>ONLINE SUPPORT 24/7</h4>
+                    <p class="text-body">Lorem ipsum dolor sit amet.</p>
+                </div>-->
+                <!-- End .info-box-content -->
+            <!--</div>-->
+            <!-- End .info-box -->
+        <!--</div>-->
+        <!-- End .info-boxes-container -->
+
+
+        <div class="products-section section-bg-gray">
+            <div class="container">
+                <h2 class="section-title appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200" data-animation-duration="1000">Featured Products</h2>
+                <div class="products-slider owl-carousel owl-theme dots-top dots-small">
+                    @foreach (var p in ViewBag.prods)
+                    {
+                    <div class="product-default inner-quickview inner-icon appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200" data-animation-duration="1000">
+                        <figure class="img-effect">
+                            <a href="~/Home/ProductDetails?id=@p.ProductId">
+                                <img src="~/ProductImages/@p.ProductMainImage1" width="265" height="265" alt="product" />
+                                @if (p.ProductMainImage2 != null)
+                                {
+                                    <img src="~/ProductImages/@p.ProductMainImage2" width="265" height="265" alt="product" />
+                                }
+                            </a>
+                            <div class="label-group">
+                                <div class="product-label label-hot">HOT</div>
+                                @if (p.DiscountPercentage > 0)
+                                {
+                                <div class="product-label label-sale">@p.DiscountPercentage%</div>
+                                }
+                            </div>
+                            @if (ViewBag.LoggedUser != null)
+                            {
+                                @if (p.isInCart == false)
+                                {
+                                    <div class="btn-icon-group">
+                                        <a href="javascript:void(0)" class="btn-icon" id="cart" onclick="GoCart(@p.ProductId)">
+                                            <i class="icon-shopping-cart"></i>
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="btn-icon-group">
+                                        <a href="javascript:void(0)" class="btn-icon">
+                                            <i class="fas fa-check-circle"></i>
+                                        </a>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="btn-icon-group">
+                                    <a href="~/Authenticate/Login" class="btn-icon">
+                                        <i class="icon-shopping-cart"></i>
+                                    </a>
+                                </div>
+                            }
+                            @*<a href="~/Home/AboutUs" class="btn-quickview" title="Quick View">
+                                Quick
+                                View
+                            </a>*@
+                        </figure>
+                        <div class="product-details">
+                            <div class="category-wrap">
+                                <div class="category-list">
+                                    <a href="#" class="product-category">@p.Category_Name</a>
+                                </div>
+                                @if (ViewBag.LoggedUser != null)
+                                {
+                                    if (p.isInWishlist==true)
+                                    {
+                                        <a href="#" title="Wishlist" class="btn-icon-wish" id="wish" >
+                                            <div class="d-xl-heart">
+                                                <img src="~/assets/images/heart.png" />
+                                            </div>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                            <a href="#" title="Wishlist" onclick="Wishlist(@p.ProductId)">
+                                <i class="icon-heart"></i>
+                            </a>
+                                    }
+
+                }
+                else
+                {
+                            <a href="#" title="Wishlist" onclick="Wishlist(@p.ProductId)">
+                                <i class="icon-heart"></i>
+                            </a>
+                }
+                            </div>
+                            <h3 class="product-title">
+                                <a href="~/Home/ProductDetails?id=@p.ProductId">@p.ProductTitle</a>
+                            </h3>
+                            <!--<div class="ratings-container">
+                                <div class="product-ratings">
+                                    <span class="ratings" style="width:100%"></span>-->
+                                    <!-- End .ratings -->
+                                    <!--<span class="tooltiptext tooltip-top"></span>
+                                </div>-->
+                                <!-- End .product-ratings -->
+                            <!--</div>-->
+                            <!-- End .product-container -->
+                            <div class="price-box">
+                                @if (p.DiscountPercentage > 0)
+                                {
+                                    <span class="old-price"> @(String.Format(Indian,"{0:N}",p.SellingPrice))</span>
+                                    <span class="product-price">Rs. @(String.Format(Indian,"{0:N}",p.DiscountedCost))</span>
+                                }
+                                else
+                                {
+                                    <span class="product-price">Rs. @(String.Format(Indian,"{0:N}",p.SellingPrice))</span>
+                                }
+                                </div>
+                            <!-- End .price-box -->
+                        </div>
+                        <!-- End .product-details -->
+                    </div>
+                    }
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="banners-grid text-uppercase grid m-b-5" data-grid-options="{
+					'sortReorder': true
+				}">
+            <div class="banner banner1 grid-item banner-md-vw w-25 w-md-100 text-transform-none w-xxs-100 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="100" data-animation-duration="1000" data-md-order="1">
+                <figure>
+                    <img src="~/ProductImages/@ViewBag.CatImages[0].Image" style="background-color: #ccc;" alt="banner">
+                </figure>
+
+                <div class="banner-layer banner-layer-middle text-right">
+                    <h4 class="banner-layer-circle-item ml-auto mb-2 ls-0">
+                        @ViewBag.CatImages[0].DiscountPercent<sup>
+                            %<small class="ls-0">OFF</small>
+                        </sup>
+                    </h4>
+                    <h5 class="m-b-3 ls-0"><del class="d-block m-b-2">Rs @ViewBag.CatImages[0].OldCost</del>Rs @ViewBag.CatImages[0].NewCost</h5>
+                    <h4 class="m-b-1 ls-n-0"> @ViewBag.CatImages[0].ImageTitle1</h4>
+                    <h3 class="mb-0 ls-0">@ViewBag.CatImages[0].ImageTitle2</h3>
+                </div>
+            </div>
+            <!-- End .banner -->
+
+            <div class="banner banner7 grid-item banner-md-vw w-50 w-md-100 order-lg-0 w-xxs-100 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200" data-animation-duration="1000" data-md-order="3">
+                <figure>
+                    <img src="~/ProductImages/@ViewBag.CatImages[1].Image" style="background-color: #444;" alt="banner">
+                </figure>
+
+                <div class="banner-layer banner-layer-middle d-flex align-items-end flex-column">
+                    <h3 class="m-b-3 text-white text-right ls-0">@ViewBag.CatImages[1].ImageTitle1<br>@ViewBag.CatImages[1].ImageTitle2</h3>
+
+                    <div class="coupon-sale-content">
+                        <h4 class="mb-1 coupon-sale-text bg-white d-block ls-n-10 text-transform-none">
+                            @ViewBag.CatImages[1].ImageDescription
+                        </h4>
+                        <h5 class="coupon-sale-text text-white ls-n-10 p-0"><i class="ls-0">UP TO</i><b class="text-dark">Rs @ViewBag.CatImages[1].StartingAt</b> OFF</h5>
+                        <a href="~/Home/ProductsList?catDetail=@ViewBag.CatImages[1].RelatedCategoryId,0" class="btn btn-block btn-dark btn-black">@ViewBag.CatImages[1].TextOnButton</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End .banner -->
+
+            <div class="banner banner4 grid-item banner-md-vw w-25 w-md-100 w-xxs-100 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="300" data-animation-duration="1000" data-md-order="7">
+                <figure>
+                    <img src="~/ProductImages/@ViewBag.CatImages[2].Image" style="background-color: #444;" alt="banner">
+                </figure>
+                <div class="banner-layer banner-layer-middle text-right">
+                    <h2 class="m-b-2 text-secondary ls-n-20">@ViewBag.CatImages[2].ImageTitle1</h2>
+                    <h3 class="m-b-1 ls-n-20">@ViewBag.CatImages[2].ImageTitle2<br>@ViewBag.CatImages[2].ImageDescription</h3>
+                    <h4 class="text-white ls-n-20">Starting<br>AT <sup>Rs</sup>@ViewBag.CatImages[2].StartingAt</h4>
+                    <a href="~/Home/ProductsList?catDetail=@ViewBag.CatImages[2].RelatedCategoryId,0" class="btn btn-light ls-10">@ViewBag.CatImages[2].TextOnButton</a>
+                </div>
+            </div>
+            <!-- End .banner -->
+
+            <div class="banner banner5 grid-item banner-md-vw text-center w-25 w-md-100 w-xxs-100 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="400" data-animation-duration="1000" data-md-order="8">
+                <figure>
+                    <img src="~/ProductImages/@ViewBag.CatImages[5].Image" style="background-color: #ccc;" alt="banner">
+                </figure>
+                <div class="banner-layer banner-layer-top">
+                    <h4 class="heading-border">@ViewBag.CatImages[5].ImageTitle1</h4>
+                    <h3 class="ls-0 mb-1">@ViewBag.CatImages[5].ImageTitle2</h3>
+                    <hr class="mb-1 mt-1">
+                    <h5 class="pt-1">@ViewBag.CatImages[5].ImageDescription</h5>
+                </div>
+                <div class="banner-layer banner-layer-bottom">
+                    <a href="~/Home/ProductsList?catDetail=@ViewBag.CatImages[5].RelatedCategoryId,0" class="btn btn-dark">@ViewBag.CatImages[5].TextOnButton</a>
+                </div>
+            </div>
+            <!-- End .banner -->
+
+            <div class="banner banner2 grid-item banner-md-vw w-25 w-md-100 w-xxs-100 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="500" data-animation-duration="1000" data-md-order="2">
+                <figure>
+                    <img src="~/ProductImages/@ViewBag.CatImages[3].Image" style="background-color: #dce1e7;" alt="banner">
+                </figure>
+                <div class="banner-layer banner-layer-top text-right">
+                    <h3 class="ls-0">@ViewBag.CatImages[3].ImageTitle1</h3>
+                    <h2 class="m-b-3 ls-10 text-transform-none">@ViewBag.CatImages[3].ImageTitle2</h2>
+                    <h4 class="m-b-3 text-secondary ls-0">Starting at Rs @ViewBag.CatImages[3].StartingAt</h4>
+                    <a href="~/Home/ProductsList?catDetail=@ViewBag.CatImages[3].RelatedCategoryId,0" class="btn btn-dark ls-10">@ViewBag.CatImages[3].TextOnButton</a>
+                </div>
+            </div>
+            <!-- End .banner -->
+
+            <div class="banner banner8 grid-item banner-md-vw w-50 w-md-100 w-xxs-100 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="600" data-animation-duration="1000" data-md-order="4">
+                <figure>
+                    <img src="~/ProductImages/@ViewBag.CatImages[4].Image" style="background-color: #bd9c88;" alt="banner">
+                </figure>
+                <div class="banner-layer banner-layer-middle">
+                    <h3 class="m-b-2 text-transform-none">@ViewBag.CatImages[4].ImageTitle1</h3>
+                    <h4 class="m-b-3">@ViewBag.CatImages[4].DiscountPercent% Off</h4>
+                    <a href="~/Home/ProductsList?catDetail=@ViewBag.CatImages[4].RelatedCategoryId,0" class="btn btn-dark ls-10">@ViewBag.CatImages[4].TextOnButton</a>
+                </div>
+            </div>
+            <!-- End .banner -->
+
+            <div class="banner banner9 grid-item banner-md-vw text-center w-50 w-md-100 w-xxs-100 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="700" data-animation-duration="1000" data-md-order="5">
+                <figure>
+                    <img src="~/ProductImages/@ViewBag.CatImages[7].Image" style="background-color: #fff;" alt="banner">
+                </figure>
+                <div class="banner-layer banner-layer-middle banner-layer-left">
+                    <h4 class="m-b-3 text-body">@ViewBag.CatImages[7].ImageTitle1</h4>
+                    <h3 class="text-nowrap">@ViewBag.CatImages[7].ImageTitle2<span class="d-block mt-1 m-b-3"> @ViewBag.CatImages[7].ImageDescription</span></h3>
+                    <hr class="mt-0 mb-2">
+                    <h5 class="coupon-sale-text ls-n-10 p-0 mb-0">
+                        <i class="ls-0">UP TO</i><b class="ls-n-0">Rs @ViewBag.CatImages[7].StartingAt</b> OFF
+                    </h5>
+                </div>
+
+                <div class="banner-layer banner-layer-middle banner-layer-right text-center">
+                    <a href="~/Home/ProductsList?catDetail=@ViewBag.CatImages[7].RelatedCategoryId,0" class="btn btn-dark">@ViewBag.CatImages[7].TextOnButton</a>
+                </div>
+            </div>
+            <!-- End .banner -->
+
+            <div class="banner banner3 grid-item banner-md-vw w-25 w-md-100 w-xxs-100 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="800" data-animation-duration="1000" data-md-order="9">
+                <figure>
+                    <img src="~/ProductImages/@ViewBag.CatImages[6].Image" style="background-color: #ccc;" alt="banner">
+                </figure>
+                <div class="banner-layer banner-layer-top text-center">
+                    <h2 class="m-b-1">@ViewBag.CatImages[6].ImageTitle1</h2>
+                    <h3 class="mb-1 pb-1">@ViewBag.CatImages[6].ImageTitle2</h3>
+                    <h4 class="text-body">@ViewBag.CatImages[6].ImageDescription</h4>
+                </div>
+                <div class="banner-layer banner-layer-bottom text-center">
+                    <a href="~/Home/ProductsList?catDetail=@ViewBag.CatImages[6].RelatedCategoryId,0" class="btn btn-secondary">@ViewBag.CatImages[6].TextOnButton</a>
+                </div>
+            </div>
+            <!-- End .banner -->
+
+            <div class="banner banner6 grid-item banner-md-vw w-25 w-md-100 w-xxs-100 appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="900" data-animation-duration="1000" data-md-order="6">
+                <figure>
+                    <img src="~/ProductImages/@ViewBag.CatImages[8].Image" style="background-color: #ccc;" alt="banner">
+                </figure>
+                <div class="banner-layer banner-layer-middle text-center">
+                    <h3 class="m-b-1 ls-0">@ViewBag.CatImages[8].ImageTitle1</h3>
+                    <h4 class="m-b-3 ls-0 text-body">Starting at @ViewBag.CatImages[8].StartingAt</h4>
+                    <a href="~/Home/ProductsList?catDetail=@ViewBag.CatImages[8].RelatedCategoryId,0" class="btn btn-dark ls-10">@ViewBag.CatImages[8].TextOnButton</a>
+                </div>
+            </div>
+            <!-- End .banner -->
+
+            <div class="grid-col-sizer w-25"></div>
+        </div>
+        <!-- End .banners-grid -->
+    </div>
+    <!-- End .container -->
+
+    <div class="mb-1"></div>
+    <!-- margin -->
+
+    <!--<div class="products-section section-bg-gray">
+        <div class="container">
+            <h2 class="section-title appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200" data-animation-duration="1000">Featured Products</h2>
+            <div class="products-slider owl-carousel owl-theme dots-top dots-small">
+                <div class="product-default inner-quickview inner-icon appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200" data-animation-duration="1000">
+                    <figure class="img-effect">
+                        <a href="#">
+                            <img src="~/assets/images/demoes/demo2/products/product-1.jpg" width="265" height="265" alt="product" />
+                            <img src="~/assets/images/demoes/demo2/products/product-1-2.jpg" width="265" height="265" alt="product" />
+                        </a>
+                        <div class="label-group">
+                            <div class="product-label label-hot">HOT</div>
+                            <div class="product-label label-sale">27%</div>
+                        </div>
+                        <div class="btn-icon-group">
+                            <a href="#" class="btn-icon btn-add-cart product-type-simple">
+                                <i class="icon-shopping-cart"></i>
+                            </a>
+                        </div>
+                        <a href="#" class="btn-quickview" title="Quick View">
+                            Quick
+                            View
+                        </a>
+                    </figure>
+                    <div class="product-details">
+                        <div class="category-wrap">
+                            <div class="category-list">
+                                <a href="#" class="product-category">category</a>
+                            </div>
+                            <a href="#" title="Wishlist" class="btn-icon-wish">
+                                <i class="icon-heart"></i>
+                            </a>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="#">Blue High Hill</a>
+                        </h3>
+                        <div class="ratings-container">
+                            <div class="product-ratings">
+                                <span class="ratings" style="width:100%"></span>-->
+                                <!-- End .ratings -->
+                                <!--<span class="tooltiptext tooltip-top"></span>
+                            </div>-->
+                            <!-- End .product-ratings -->
+                        <!--</div>-->
+                        <!-- End .product-container -->
+                        <!--<div class="price-box">
+                            <span class="old-price">$59.00</span>
+                            <span class="product-price">$49.00</span>
+                        </div>-->
+                        <!-- End .price-box -->
+                    <!--</div>-->
+                    <!-- End .product-details -->
+                <!--</div>
+                <div class="product-default inner-quickview inner-icon appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200" data-animation-duration="1000">
+                    <figure class="img-effect">
+                        <a href=#>
+                            <img src="~/assets/images/demoes/demo2/products/product-2.jpg" width="265" height="265" alt="product" />
+                        </a>
+                        <div class="btn-icon-group">
+                            <a href="#" class="btn-icon btn-add-cart">
+                                <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                        <a href="#" class="btn-quickview" title="Quick View">
+                            Quick
+                            View
+                        </a>
+                    </figure>
+                    <div class="product-details">
+                        <div class="category-wrap">
+                            <div class="category-list">
+                                <a href="#" class="product-category">category</a>
+                            </div>
+                            <a href="#" title="Wishlist" class="btn-icon-wish">
+                                <i class="icon-heart"></i>
+                            </a>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="#">Brown Backpack</a>
+                        </h3>
+                        <div class="ratings-container">
+                            <div class="product-ratings">
+                                <span class="ratings" style="width:100%"></span>-->
+                                <!-- End .ratings -->
+                                <!--<span class="tooltiptext tooltip-top"></span>
+                            </div>-->
+                            <!-- End .product-ratings -->
+                        <!--</div>-->
+                        <!-- End .product-container -->
+                        <!--<div class="price-box">
+                            <span class="old-price">$59.00</span>
+                            <span class="product-price">$49.00</span>
+                        </div>-->
+                        <!-- End .price-box -->
+                    <!--</div>-->
+                    <!-- End .product-details -->
+                <!--</div>
+                <div class="product-default inner-quickview inner-icon appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200" data-animation-duration="1000">
+                    <figure class="img-effect">
+                        <a href="#">
+                            <img src="~/assets/images/demoes/demo2/products/product-3.jpg" width="265" height="265" alt="product" />
+                        </a>
+                        <div class="btn-icon-group">
+                            <a href="#" class="btn-icon btn-add-cart product-type-simple">
+                                <i class="icon-shopping-cart"></i>
+                            </a>
+                        </div>
+                        <a href="#" class="btn-quickview" title="Quick View">
+                            Quick
+                            View
+                        </a>
+                    </figure>
+                    <div class="product-details">
+                        <div class="category-wrap">
+                            <div class="category-list">
+                                <a href="#" class="product-category">category</a>
+                            </div>
+                            <a href="#" title="Wishlist" class="btn-icon-wish">
+                                <i class="icon-heart"></i>
+                            </a>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="#">Black Belt</a>
+                        </h3>
+                        <div class="ratings-container">
+                            <div class="product-ratings">
+                                <span class="ratings" style="width:100%"></span>-->
+                                <!-- End .ratings -->
+                                <!--<span class="tooltiptext tooltip-top"></span>
+                            </div>-->
+                            <!-- End .product-ratings -->
+                        <!--</div>-->
+                        <!-- End .product-container -->
+                        <!--<div class="price-box">
+                            <span class="old-price">$59.00</span>
+                            <span class="product-price">$49.00</span>
+                        </div>-->
+                        <!-- End .price-box -->
+                    <!--</div>-->
+                    <!-- End .product-details -->
+                <!--</div>
+                <div class="product-default inner-quickview inner-icon appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200" data-animation-duration="1000">
+                    <figure class="img-effect">
+                        <a href="#">
+                            <img src="~/assets/images/demoes/demo2/products/product-4.jpg" width="265" height="265" alt="product">
+                        </a>
+                        <div class="btn-icon-group">
+                            <a href="#" class="btn-icon btn-add-cart product-type-simple">
+                                <i class="icon-shopping-cart"></i>
+                            </a>
+                        </div>
+                        <a href="#" class="btn-quickview" title="Quick View">
+                            Quick
+                            View
+                        </a>
+                    </figure>
+                    <div class="product-details">
+                        <div class="category-wrap">
+                            <div class="category-list">
+                                <a href="#" class="product-category">category</a>
+                            </div>
+                            <a href="#" title="Wishlist" class="btn-icon-wish">
+                                <i class="icon-heart"></i>
+                            </a>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="#">High Hill Casual</a>
+                        </h3>
+                        <div class="ratings-container">
+                            <div class="product-ratings">
+                                <span class="ratings" style="width:100%"></span>-->
+                                <!-- End .ratings -->
+                                <!--<span class="tooltiptext tooltip-top"></span>
+                            </div>-->
+                            <!-- End .product-ratings -->
+                        <!--</div>-->
+                        <!-- End .product-container -->
+                        <!--<div class="price-box">
+                            <span class="old-price">$59.00</span>
+                            <span class="product-price">$49.00</span>
+                        </div>-->
+                        <!-- End .price-box -->
+                    <!--</div>-->
+                    <!-- End .product-details -->
+                <!--</div>
+                <div class="product-default inner-quickview inner-icon appear-animate" data-animation-name="fadeInUpShorter" data-animation-delay="200" data-animation-duration="1000">
+                    <figure class="img-effect">
+                        <a href=#>
+                            <img src="~/assets/images/demoes/demo2/products/product-5.jpg" width="265" height="265" alt="product" />
+                        </a>
+                        <div class="btn-icon-group">
+                            <a href="#" class="btn-icon btn-add-cart product-type-simple">
+                                <i class="icon-shopping-cart"></i>
+                            </a>
+                        </div>
+                        <a href="#" class="btn-quickview" title="Quick View">
+                            Quick
+                            View
+                        </a>
+                    </figure>
+                    <div class="product-details">
+                        <div class="category-wrap">
+                            <div class="category-list">
+                                <a href="#" class="product-category">category</a>
+                            </div>
+                            <a href="#" title="Wishlist" class="btn-icon-wish">
+                                <i class="icon-heart"></i>
+                            </a>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="#">Travel Bag</a>
+                        </h3>
+                        <div class="ratings-container">
+                            <div class="product-ratings">
+                                <span class="ratings" style="width:100%"></span>-->
+                                <!-- End .ratings -->
+                                <!--<span class="tooltiptext tooltip-top"></span>
+                            </div>-->
+                            <!-- End .product-ratings -->
+                        <!--</div>-->
+                        <!-- End .product-container -->
+                        <!--<div class="price-box">
+                            <span class="old-price">$59.00</span>
+                            <span class="product-price">$49.00</span>
+                        </div>-->
+                        <!-- End .price-box -->
+                    <!--</div>-->
+                    <!-- End .product-details -->
+                <!--</div>
+            </div>
+        </div>
+    </div>-->
+
+    @*<div class="brands-section mt-5 mb-5 appear-animate" data-animation-delay="200" data-animation-name="fadeIn" data-animation-duration="1000">
+        <div class="container">
+            <div class="brands-slider owl-carousel owl-theme images-center" data-owl-options="{
+                        'margin': 0
+                    }">
+                <img src="~/assets/images/brands/small/brand1.png" width="140" height="60" alt="brand">
+                <img src="~/assets/images/brands/small/brand2.png" width="140" height="60" alt="brand">
+                <img src="~/assets/images/brands/small/brand3.png" width="140" height="60" alt="brand">
+                <img src="~/assets/images/brands/small/brand4.png" width="140" height="60" alt="brand">
+                <img src="~/assets/images/brands/small/brand5.png" width="140" height="60" alt="brand">
+                <img src="~/assets/images/brands/small/brand6.png" width="140" height="60" alt="brand">
+            </div>
+        </div>
+    </div>*@
+</main>
+<script>
+    function GoCart(id) {
+        $.ajax({
+            url: GlobalUrl + "Sales/SaveCart?id=" + id,
+            type: 'post',
+            data: '{}',
+            success: function (result) {
+
+                if (result.result.statusCode == 1) {
+                   
+                    window.location.href=window.location.href;
+                }
+                else {
+                    toastr['error'](result.result.statusMessage);
+                }
+            }            
+        })
+    }
+    function Wishlist(id) {
+        $.ajax({
+            url: GlobalUrl + 'Sales/SaveWishList?id=' + id,
+            type: 'post',
+            data: '{}',
+            success: function (result) {
+                if (result.result.statusCode == 1) {
+                   
+                    window.location.href = window.location.href;
+                }
+                else if (result.result.statusCode == 5) {
+                    window.location = "Authenticate/Login";                   
+                }
+                else {
+                    toastr["error"](result.result.statusMessage);
+                }
+            }
+        });
+    }
+</script>

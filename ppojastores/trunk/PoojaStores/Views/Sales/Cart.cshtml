@@ -1,0 +1,303 @@
+﻿@model IEnumerable<PoojaStores.Models.Repositories.Entity.CartDetails>
+@{
+    decimal totalPrice = 0;
+    decimal tx =0;
+    decimal totwithTax = 0;
+    System.Globalization.CultureInfo Indian = new System.Globalization.CultureInfo("hi-IN");
+}
+<main class="main">
+    <div class="container">
+        @*<ul class="checkout-progress-bar d-flex justify-content-center flex-wrap mt-2">
+            <li class="active">
+                <a href="cart.html">Shopping Cart</a>
+            </li>
+            <li>
+                <a href="checkout.html">Checkout</a>
+            </li>
+            <li class="disabled">
+                <a href="cart.html">Order Complete</a>
+            </li>
+        </ul>*@
+    <br />
+    <br />
+        @if (ViewBag.CartCount > 0)
+        {
+            <div class="row">
+            <div class="col-lg-8">
+                <div class="cart-table-container">
+                    <table class="table table-cart">
+                        <thead>
+                            <tr>
+                                <th class="thumbnail-col"></th>
+                                <th class="product-col">Product</th>
+                                <th class="price-col">Price</th>
+                                <th class="qty-col">Quantity</th>
+                                <th class="text-right">Subtotal</th>
+                                <th class="text-right">Add to wishList</th>
+                                <th class="text-right">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in Model)
+                            {
+                            <tr class="product-row">
+                                <td>
+                                    <figure class="product-image-container">
+
+                                        <a href="~/Home/ProductDetails?id=@p.ProductId" class="product-image">
+                                            <img src="~/ProductImages/@p.Image1" width="100" height="100" alt="product">
+                                        </a>
+
+                                    </figure>
+                                    @*<a href="#" class="btn-remove icon-cancel" title="Remove Product"></a>*@
+                                </td>
+                                <td class="product-col">
+                                    <h5 class="product-title">
+                                        <a href="~/Home/ProductDetails?id=@p.ProductId">@p.Title</a>
+                                    </h5>
+                                </td>
+                                <td>@(String.Format(Indian, "{0:N}", p.Price))</td>
+                                <td>
+                                    <div class="product-single-qty">
+                                        <div class="input-group">
+                                            <input type="button" value="-" class="button-minus border rounded-circle  icon-shape icon-sm mx-1 " data-field="quantity" onclick="minuCart(@p.CartDetailId)">
+                                            <input step="1" max="10" id="ccnt_@p.CartDetailId" value="@p.NumberProducts" name="quantity" class="quantity-field border-0 text-center w-25" readonly>
+                                            <input type="button" value="+" class="button-plus border rounded-circle icon-shape icon-sm " data-field="quantity"onclick="plusCart(@p.CartDetailId)">
+                                        </div>
+                                    </div>
+                                    @*<br /><br /><br />
+                                    <button onclick="updCrt(@p.CartId)">Update Cart</button>*@
+                                </td>
+                                @{
+                                    var price = p.Price * p.NumberProducts;
+                                    totalPrice += (decimal)price;
+                                    var singletax = p.GStPrice * p.NumberProducts;
+                                    tx += (decimal)singletax;
+                                }
+                                <td class="text-right"><span class="subtotal-price" id="singleTotal_@p.CartId">@(String.Format(Indian, "{0:N}", price))</span></td>
+                                <td class="text-right"> <a href="~/Sales/MoveToWishlist?id=@p.CartDetailId" class="btn btn-primary btn-sm">Move to Wishlist</a></td>
+                                <td class="text-right">
+                                    <a href="javascript:void(0)" onclick="ShowDelete(@p.CartDetailId)">
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                                    }                           
+                        </tbody>
+                        <!--<tfoot>
+                            <tr>
+                                <td colspan="5" class="clearfix">
+                                    <div class="float-left">
+                                        <div class="cart-discount">
+                                            <form action="#">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-sm"
+                                                           placeholder="Coupon Code" required>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-sm" type="submit">
+                                                            Apply
+                                                            Coupon
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="float-right">
+                                        <button type="submit" class="btn btn-shop btn-update-cart">
+                                            Update Cart
+                                        </button>
+                                    </div>
+                                <!--</td>
+                            </tr>
+                        </tfoot>-->
+                    </table>
+                </div><!-- End .cart-table-container -->
+            </div><!-- End .col-lg-8 -->
+
+            <div class="col-lg-4 ">
+                <div class="cart-summary">
+                    <h4>CART TOTAL</h4>
+
+                    <table class="table table-totals">
+                        <tbody>
+                            <tr>
+                                <td>Subtotal</td>
+                                <td><h5>@(String.Format(Indian, "{0:N}", totalPrice))</h5></td>
+                            </tr>
+                            <tr>
+                                <td>Tax Amount</td>
+                                <td><h5>@(String.Format(Indian, "{0:N}", tx))</h5></td>
+                            </tr>                      
+                        </tbody>
+                        @{ totwithTax = totalPrice + tx;}
+                        <tfoot>
+                            <tr>
+                                <td>Total With Taxes</td>
+                                <td><h5>@(String.Format(Indian, "{0:N}", totwithTax))</h5></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                @if (Model.Count() > 0)
+                {
+                    <div class="checkout-methods">
+                        <a href="~/Sales/CheckOut" class="btn btn-block btn-dark">
+                            Proceed to Checkout
+                            <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </div>
+                }
+
+
+                </div><!-- End .cart-summary -->
+            </div><!-- End .col-lg-4 -->
+        </div><!-- End .row -->
+            }
+            else
+            {
+                <a href="~/Home/Index" class="btn btn-primary">Go Shop</a>
+            }
+    </div><!-- End .container -->
+
+    <div class="mb-6"></div><!-- margin -->
+</main>
+@*<script>
+    function incrementValue(e) {
+        e.preventDefault();
+        var fieldName = $(e.target).data('field');
+        var parent = $(e.target).closest('div');
+        var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
+
+        if (!isNaN(currentVal)) {
+            parent.find('input[name=' + fieldName + ']').val(currentVal + 1);
+        } else {
+            parent.find('input[name=' + fieldName + ']').val(0);
+        }
+    }
+    function decrementValue(e) {
+        e.preventDefault();
+        var fieldName = $(e.target).data('field');
+        var parent = $(e.target).closest('div');
+        var currentVal = parseInt(parent.find('input[name=' + fieldName + ']').val(), 10);
+
+        if (!isNaN(currentVal) && currentVal > 1) {
+            parent.find('input[name=' + fieldName + ']').val(currentVal - 1);
+        } else {
+            parent.find('input[name=' + fieldName + ']').val(1);
+        }
+    }
+    $('.input-group').on('click', '.button-plus', function (e) {
+        incrementValue(e);
+    });
+
+    $('.input-group').on('click', '.button-minus', function (e) {
+        decrementValue(e);
+    });
+</script>*@
+<script>
+    //var oldtotal =@totalPrice;
+    function ShowDelete(id) {
+        swal("Are you sure?", {
+            buttons: {
+                yes: {
+                    text: "Yes",
+                    value: "yes"
+                },
+                no: {
+                    text: "No",
+                    value: "no"
+                }
+            }
+        }).then((value) => {
+            if (value === "yes") {
+                $.ajax({
+                    url: GlobalUrl + "Sales/DeleteCart?id=" + id,
+                    type: 'post',
+                    data: '{}',
+                    success: function (result) {
+                        toastr["success"]("Successuflly deleted!");
+                        window.location.href = window.location.href;
+                    }
+                });
+            }
+            else {
+                toastr["error"]("Delete cancelled!");
+            };
+        });
+    }
+    function updCrt(id) {
+        var newcnt = $("#ccnt_" + id).val();
+        $.ajax({
+            url: GlobalUrl + "Sales/UpdateCart?cartId=" + id + "&newCnt=" + newcnt,
+            type: 'post',
+            date: '{}',
+            success: function (res) {
+                if (res.result.statusCode == 1) {
+                    toastr["success"]("Successuflly Updated");
+                    window.location.href = window.location.href;
+                } else {
+                    toastr["error"](res.result.statusMessage);
+                }
+            }
+        })
+    }
+    function minuCart(id) {
+        var newcnt = $("#ccnt_" + id).val();        
+        if (newcnt != '1') {
+            var cnt = parseInt(newcnt) - 1;
+            $.ajax({
+                url: GlobalUrl + "Sales/UpdateCart?cartId=" + id + "&newCnt=" + cnt,
+                type: 'post',
+                date: '{}',
+                success: function (res) {
+                    if (res.result.statusCode == 1) {
+                        //toastr["success"]("Successuflly Updated");
+                        //var mul = cnt * price;
+                        //var str = mul.toString();
+                        //$("#singleTotal_" + id).text(str + ".00");
+                        //var tot = oldtotal;
+                        //var newtot = tot - price;
+                        //var nt = newtot + ".00";
+                        //$("#tot").text(nt);
+                        //oldtotal = newtot;
+                        //$("#ccnt_" + id).val(cnt);
+                        window.location.href=window.location.href;
+                    } else {
+                        toastr["error"](res.result.statusMessage);
+                    }
+                }
+            })
+        } else {
+            toastr["error"]("Min Order Qty Should be 1");
+        }
+    }
+    function plusCart(id) {
+        var newcnt = $("#ccnt_" + id).val();
+        var cnt = parseInt(newcnt) + 1;
+        $.ajax({
+            url: GlobalUrl + "Sales/UpdateCart?cartId=" + id + "&newCnt=" + cnt,
+            type: 'post',
+            date: '{}',
+            success: function (res) {
+                if (res.result.statusCode == 1) {
+                    //toastr["success"]("Successuflly Updated");
+                    //var mul = cnt * price;
+                    //var str = mul.toString();
+                    //$("#singleTotal_" + id).text(str + ".00");
+                    //var tot = oldtotal;
+                    //var newtot = tot + price;
+                    //var nt = newtot + ".00";
+                    //$("#tot").text(nt);
+                    //oldtotal = newtot;
+                    //$("#ccnt_" + id).val(cnt);
+                    window.location.href=window.location.href;
+                } else {
+                    toastr["error"](res.result.statusMessage);
+                }
+            }
+        })
+    }
+</script>

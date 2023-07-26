@@ -1,0 +1,94 @@
+﻿@model IEnumerable<PoojaStores.Models.ModelClasses.OrderDetailDisplay>
+@{
+    int rCnt = 1;
+    Layout = "~/Views/Shared/AdminMaster.cshtml";
+}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-book"></i>
+        </div>
+        <div class="header-title">
+            <h1>Returned Orders</h1>
+            <small>Amount to be Refunded.</small>
+        </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card" data-sortable="true">
+                    <div class="card-header">
+                        <div class="card-title custom_title">
+                            <h4>Returned Orders List (Amount To be refunded)</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="no-more-tables">
+                            <table class="col-md-12 table-bordered table-striped table-condensed cf">
+                                <thead class="cf">
+                                    <tr>
+                                        <th>S.no</th>
+                                        <th>Order Id</th>
+                                        <th>Product Code</th>
+                                        <th>Product</th>
+                                        <th>No Of Items Ordered</th>
+                                        @*<th>Dispatch Details</th>*@
+                                        @*<th>Details</th>*@
+                                        <th>Payment Status</th>
+                                        <th>Refund</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var u in Model)
+                                    {
+                                        <tr>
+                                            <td data-title="S.no">@(rCnt++)</td>
+                                            <td data-title="Category Name">@u.OrderId</td>
+                                            <td data-title="Category Name">@u.ProductCode</td>
+                                            <td data-title="Category Name">
+                                                <img src="~/ProductImages/@u.Image" width="150" height="150">
+                                            </td>
+                                            <td data-title="Category Name">@u.NumberOfItems</td>
+                                            @*<td data-title="Category Name">
+                                                    @{
+                                                        DateTime co = Convert.ToDateTime(u.DispatchedOn);
+                                                        DateTime delon = Convert.ToDateTime(u.DeliveredOn);
+                                                    }
+                                                    @if (u.DispatchedBy == "")
+                                                    {
+                                                        <span> Dispatched Through :</span>
+                                                        @u.DispatchedBy
+                                                        <br />
+                                                        <span>
+                                                            Dispatched On :
+                                                            @co.ToString("dd/MM/yyyy")
+                                                        </span>
+                                                        <br />
+                                                        <span>
+                                                            Dispatch Number : @u.DispatchNumber
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Not yet Dispatched</span>
+                                                    }
+                                                </td>*@
+                                            <td>@u.PaymentStatus</td>
+                                            <td>
+                                                <a href="~/Order/RefundDetailsOfReturnedOrder?id=@u.PODetailId" class="btn btn-primary">Refund</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
